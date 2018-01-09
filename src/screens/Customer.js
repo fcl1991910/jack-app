@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, Text, View} from 'react-native';
 
-const Screen3 = () => (
+const Customer = () => (
     <View style={styles.container}>
-    <Text>3333333333333333</Text>
+    <Text>CustomerCustomerCustomerCustomerCustomerCustomer</Text>
 </View>
 );
 
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     }
   });
 
-export default Screen3;
+export default Customer;

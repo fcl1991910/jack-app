@@ -1,9 +1,9 @@
 import React from "react";
 import {StyleSheet, Text, View} from 'react-native';
 
-const Screen2 = () => (
+const Order = () => (
     <View style={styles.container}>
-    <Text>22222222222222222222222222</Text>
+    <Text>OrderOrderOrderOrderOrderOrderOrder</Text>
 </View>
 );
 
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
     }
   });
 
-export default Screen2;
+export default Order;

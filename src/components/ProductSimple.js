@@ -6,7 +6,7 @@ import Card from './Card';
 import CardSection from './CardSection';
 import Button from './Button';
 
-const AlbumDetail = ({ item }) => {
+const ProductSimple = ({ item }) => {
   const { title, artist, thumbnail_image, image, url } = item;
   const {
     thumbnailStyle,
@@ -18,7 +18,6 @@ const AlbumDetail = ({ item }) => {
 
   return (
     <Card>
-
       <CardSection>
         <View style={thumbnailContainerStyle}>
           <Image
@@ -72,7 +71,7 @@ const styles = {
   }
 };
 
-AlbumDetail.propTypes = {
+ProductSimple.propTypes = {
   album: PropTypes.object,
   title: PropTypes.string,
   artist: PropTypes.string,
@@ -80,4 +79,4 @@ AlbumDetail.propTypes = {
   image: PropTypes.string
 };
 
-export default AlbumDetail;
+export default ProductSimple;
