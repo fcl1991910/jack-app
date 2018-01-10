@@ -16,9 +16,9 @@ class Product extends Component {
     });
   }
 
-  static navigationOptions = {
-    //title: (navigation) => (`${navigation.state.params.title}`)
-  }
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.title
+  });
 
   render() {
     return (
