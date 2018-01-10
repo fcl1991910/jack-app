@@ -16,9 +16,6 @@ export const ProductStack = StackNavigator({
   },
   Product: {
     screen: Product,
-    navigationOptions: {
-      title: '产品'
-    }
   }
 });
 

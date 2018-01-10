@@ -1,7 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ScrollView, FlatList, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  Image,
+  TouchableHighlight
+} from "react-native";
 import axios from "axios";
-import ProductSimple from "../components/ProductSimple";
 
 class ProductList extends Component {
   constructor() {
@@ -14,32 +21,52 @@ class ProductList extends Component {
   componentWillMount() {
     axios
       .get("https://rallycoding.herokuapp.com/api/music_albums")
-      .then(response => this.setState({ products: response.data }))
+      .then(response => {
+        let products = [];
+        products = products.concat(response.data);
+        products = products.concat(response.data);
+        products = products.concat(response.data);
+        products = products.concat(response.data);
+        this.setState({
+          products: products
+        });
+      })
       .catch(error => console.log(error));
   }
 
-  _renderItem = ({ item }) => <ProductSimple key={item.title} item={item} />;
+  //_renderItem = ({ item }) => <ProductSimple key={item.title} item={item} />; //FlatList  FlatList  FlatList  FlatList  FlatList  FlatList
+
+  onLearnMore = (item) => {
+    this.props.navigation.navigate('Product',item);
+  };
 
   render() {
     let products = [];
     let products_size = 0;
-    this.state.products.forEach(function(item){
-      console.log(item.image);
+      for(var key in this.state.products){
+        let item = this.state.products[key];
       products.push(
-        <View style={styles.product} key={products_size++}><Image source={{uri:item.image}}/></View>
+        <TouchableHighlight style={styles.TouchableHighlight} onPress={() => this.onLearnMore(item)} key={products_size++}>
+          <View style={styles.product}>
+            <Image style={styles.image} source={{ uri: item.image }} />
+            <View style={styles.title}>
+              <Text style={styles.text}>{item.title}</Text>
+            </View>
+          </View>
+        </TouchableHighlight>
       );
-    });
+    }
     return (
       <View>
         <ScrollView style={styles.ScrollView}>
-          <View style={styles.product_list}>
-            {products}
-          </View>
-          {/*<FlatList
+          <View style={styles.product_list}>{products}</View>
+          {/*  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  FlatList  
+          <FlatList
             data={this.state.products}
             renderItem={this._renderItem}
             keyExtractor={(item, index) => index}
-          />*/}
+          />
+        */}
         </ScrollView>
       </View>
     );
@@ -47,8 +74,8 @@ class ProductList extends Component {
 }
 
 const styles = StyleSheet.create({
-  ScrollView:{
-    flex: 1
+  ScrollView: {
+    //flex: 1
   },
   product_list: {
     flex: 1,
@@ -56,18 +83,22 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around"
   },
-  product: {
+  TouchableHighlight: {
+    marginTop: 7,
     width: 180,
-    height: 180,
-    backgroundColor: "#742",
-    marginTop: 5
+    height: 208,
   },
-  container: {
-    flex: 1,
+  product: {
+    flexDirection: "column",
+    width: 180,
+    height: 208,
     backgroundColor: "#fff",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center"
-  }
+  },
+  image: { width: 180, height: 180 },
+  title: { width: 180,height: 30},
+  text: { fontSize: 20, paddingBottom: 3, color: "#777", textAlign:'center', fontWeight: "800" }
 });
 
 export default ProductList;

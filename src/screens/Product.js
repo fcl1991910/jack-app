@@ -1,20 +1,39 @@
-import React from "react";
-import {StyleSheet, Text, View} from 'react-native';
+import React,{Component} from "react";
+import { StyleSheet, Text, View } from "react-native";
+import ProductSimple from "../components/ProductSimple";
 
-const Product = () => (
-    <View style={styles.container}>
-    <Text>ProductProductProductProductProduct</Text>
-</View>
-);
+class Product extends Component {
+  constructor() {
+    super();
+    this.state = {
+      item: []
+    };
+  }
 
+  componentWillMount() {
+    this.setState({
+      item: this.props.navigation.state.params
+    });
+  }
+
+  static navigationOptions = {
+    //title: (navigation) => (`${navigation.state.params.title}`)
+  }
+
+  render() {
+    return (
+      <ProductSimple key={this.state.item.title} item={this.state.item} />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  });
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 export default Product;
