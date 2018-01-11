@@ -4,8 +4,10 @@ import { Icon } from "react-native-elements";
 
 import ProductList from "../screens/ProductList";
 import Product from "../screens/Product";
-import Order from "../screens/Order";
+import CustomerList from "../screens/CustomerList";
 import Customer from "../screens/Customer";
+import Order from "../screens/Order";
+import User from "../screens/User";
 
 export const ProductStack = StackNavigator({
   ProductList: {
@@ -16,6 +18,18 @@ export const ProductStack = StackNavigator({
   },
   Product: {
     screen: Product,
+  }
+});
+
+export const CustomerStack = StackNavigator({
+  CustomerList: {
+    screen: CustomerList,
+    navigationOptions: {
+      title: '客户列表'
+    }
+  },
+  Customer: {
+    screen: Customer,
   }
 });
 
@@ -30,6 +44,15 @@ export const Tabs = TabNavigator({
     }
   },
   Screen2: {
+    screen: CustomerStack,
+    navigationOptions: {
+        tabBarLabel: "客户",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="face" size={35} color={tintColor} />
+        )
+    }
+  },
+  Screen3: {
     screen: Order,
     navigationOptions: {
       tabBarLabel: "订单",
@@ -38,8 +61,8 @@ export const Tabs = TabNavigator({
         )
     }
   },
-  Screen3: {
-    screen: Customer,
+  Screen4: {
+    screen: User,
     navigationOptions: {
       tabBarLabel: "用户中心",
         tabBarIcon: ({ tintColor }) => (

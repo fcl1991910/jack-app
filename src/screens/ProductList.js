@@ -14,7 +14,7 @@ class ProductList extends Component {
   constructor() {
     super();
     this.state = {
-      products: []
+      items: []
     };
   }
 
@@ -28,7 +28,7 @@ class ProductList extends Component {
         products = products.concat(response.data);
         products = products.concat(response.data);
         this.setState({
-          products: products
+          items: products
         });
       })
       .catch(error => console.log(error));
@@ -43,8 +43,8 @@ class ProductList extends Component {
   render() {
     let products = [];
     let products_size = 0;
-      for(var key in this.state.products){
-        let item = this.state.products[key];
+      for(var key in this.state.items){
+        let item = this.state.items[key];
       products.push(
         <TouchableHighlight style={styles.TouchableHighlight} onPress={() => this.onLearnMore(item)} key={products_size++}>
           <View style={styles.product}>
