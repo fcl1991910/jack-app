@@ -24,7 +24,7 @@ export default class App extends Component {
     style = {marginTop: 24};
     return (
       <Provider store={store}>
-        <View style={style}>
+        <View style={styles.view}>
           <Tabs />
         </View>
       </Provider>
@@ -33,4 +33,7 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1
+  }
 });
