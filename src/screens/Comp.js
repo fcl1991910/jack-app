@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Dimensions, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions
+} from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import Category from "../components/Category";
 import Header from "../components/Header";
+import TabHeader from "../components/TabHeader";
 
 const initialLayout = {
   height: 0,
@@ -23,10 +29,9 @@ const FourthRoute = () => (
 );
 
 class Comp extends React.Component {
-
-  static navigationOptions = ({navigation}) => ({
-    title: '',
-    headerLeft: <Header headerText='asd'/>,
+  static navigationOptions = ({ navigation }) => ({
+    title: "",
+    headerLeft: <Header />
   });
 
   state = {
@@ -44,29 +49,7 @@ class Comp extends React.Component {
 
   _changeIndex = index => this.setState({ index });
 
-  _renderHeader = props => {
-    //console.log(Dimensions.get('window').width);
-    //console.log('-----------------',props,'----------------------');
-    let headers = [];
-    let viewStyle, textStyle;
-    //props.navigationState.routes.forEach(function(value) {
-    for(let i=0; i<props.navigationState.routes.length; i++){
-      let value = props.navigationState.routes[i];
-      if (props.navigationState.index == i) {
-        viewStyle = [styles.tab, styles.tabActive];
-        textStyle = [styles.tabText, styles.tabActiveText];
-      } else {
-        viewStyle = [styles.tab, styles.tabInactive];
-        textStyle = [styles.tabText, styles.tabInactiveText];
-      }
-      headers.push(
-        <TouchableHighlight key={i} style={viewStyle} underlayColor={null} onPress={()=>this._changeIndex(i)}>
-          <Text style={textStyle}>{value.title}</Text>
-        </TouchableHighlight>
-      );
-    }
-    return <View style={styles.tabHeader}>{headers}</View>;
-  };
+  _renderHeader = props => <TabHeader {...props} styles={styles_tabheader} _changeIndex={(i)=>this._changeIndex(i)}/>;
 
   // <TabBar
   //   {...props}
@@ -102,19 +85,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f7f7f7"
   },
-  tabHeader: {
-    flexDirection: "row",
-    justifyContent: "center",
-    height: 34,
-  },
+  content: {
+    marginTop: 34
+  }
+});
+
+const styles_tabheader = StyleSheet.create({
   tab: {
     width: Dimensions.get("window").width * 0.14
   },
-  tabInactive: {},
   tabActive: {
     borderBottomWidth: 1.5,
     borderColor: "red"
   },
+  tabInactive: {},
   tabText: {
     fontSize: 15,
     padding: 8,
@@ -126,7 +110,12 @@ const styles = StyleSheet.create({
   },
   tabInactiveText: {
     color: "#666"
-  }
+  },
+  tabHeader: {
+    flexDirection: "row",
+    justifyContent: "center",
+    height: 34,
+  },
 });
 
 export default Comp;
