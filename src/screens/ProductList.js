@@ -18,6 +18,10 @@ class ProductList extends Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: '产品'
+  });
+
   componentWillMount() {
     axios
       .get("https://rallycoding.herokuapp.com/api/music_albums")

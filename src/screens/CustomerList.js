@@ -19,6 +19,10 @@ class CustomerList extends Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: '客户'
+  });
+
   componentWillMount() {
     axios
       .get("https://rallycoding.herokuapp.com/api/music_albums")

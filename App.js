@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import reducer from "./src/reducers";
-import { Tabs } from "./src/config/router";
+import { Stacks } from "./src/config/router";
 
 const loggerMiddleware = createLogger({
   predicate: (getState, action) => __DEV__
@@ -25,7 +25,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.view}>
-          <Tabs />
+          <Stacks />
         </View>
       </Provider>
     );
