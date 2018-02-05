@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, TouchableHighlight } from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import Category from "../components/Category";
 import Header from "../components/Header";
@@ -42,14 +42,17 @@ class Comp extends React.Component {
 
   _handleIndexChange = index => this.setState({ index });
 
+  _changeIndex = index => this.setState({ index });
+
   _renderHeader = props => {
     //console.log(Dimensions.get('window').width);
     //console.log('-----------------',props,'----------------------');
     let headers = [];
-    let i = 0;
     let viewStyle, textStyle;
-    props.navigationState.routes.forEach(function(value) {
-      if (props.navigationState.index == i++) {
+    //props.navigationState.routes.forEach(function(value) {
+    for(let i=0; i<props.navigationState.routes.length; i++){
+      let value = props.navigationState.routes[i];
+      if (props.navigationState.index == i) {
         viewStyle = [styles.tab, styles.tabActive];
         textStyle = [styles.tabText, styles.tabActiveText];
       } else {
@@ -57,11 +60,11 @@ class Comp extends React.Component {
         textStyle = [styles.tabText, styles.tabInactiveText];
       }
       headers.push(
-        <View key={i} style={viewStyle}>
+        <TouchableHighlight key={i} style={viewStyle} underlayColor={null} onPress={()=>this._changeIndex(i)}>
           <Text style={textStyle}>{value.title}</Text>
-        </View>
+        </TouchableHighlight>
       );
-    });
+    }
     return <View style={styles.tabHeader}>{headers}</View>;
   };
 

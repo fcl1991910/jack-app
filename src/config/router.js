@@ -104,4 +104,6 @@ export const Tabs = TabNavigator({
         )
     }
   }
+}, {
+  tabBarPosition: 'bottom',
 });
