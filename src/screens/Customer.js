@@ -17,12 +17,12 @@ class Customer extends Component {
   }
 
   static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.title
+    name: navigation.state.params.name
   });
 
   render() {
     return (
-      <ProductSimple key={this.state.item.title} item={this.state.item} />
+      <ProductSimple key={this.state.item.name} item={this.state.item} />
     );
   }
 }

@@ -1,28 +1,27 @@
 [
   {
     "id": 1,
-    "name": "{\"CN\":\"\u7537\u88c5\",\"EN\":\"Men's Clothing\"}",
+    "name": "男装",
     "children": [
       {
         "id": 4,
-        "name": "{\"CN\":\"\u7537\u88c5\u4e0a\u8863\",\"EN\":\"Men's coat\"}",
+        "name": "男装上衣",
         "children": [
-          { "id": 5, "name": "{\"CN\":\"T\u6064\",\"EN\":\"T-shirt\"}" },
-          { "id": 6, "name": "{\"CN\":\"\u536b\u8863\",\"EN\":\"Sweater\"}" },
+          { "id": 5, "name": "T恤","image":"../img/milk-powder.png" },
+          { "id": 6, "name": "卫衣" },
           {
             "id": 25,
-            "name":
-              "{\"CN\":\"\u7537\u58eb\u5939\u514b\",\"EN\":\"Men's jackets\"}"
+            "name": "男士夹克"
           }
         ]
       },
       {
         "id": 7,
-        "name": "{\"CN\":\"\u7537\u88c5\u88e4\u5b50\",\"EN\":\"Men's pants\"}",
+        "name": "男装裤子",
         "children": [
           {
             "id": 9,
-            "name": "{\"CN\":\"\u8fd0\u52a8\u88e4\",\"EN\":\"Sweatpants\"}"
+            "name": "运动裤"
           }
         ]
       }
@@ -30,32 +29,29 @@
   },
   {
     "id": 2,
-    "name": "{\"CN\":\"\u5973\u88c5\",\"EN\":\"Women's Clothing\"}",
+    "name": "女装",
     "children": [
       {
         "id": 3,
-        "name": "{\"CN\":\"\u5973\u88c5\u4e0a\u8863\",\"EN\":\"Women's coat\"}",
+        "name": "女装上衣",
         "children": [
           {
             "id": 26,
-            "name":
-              "{\"CN\":\"\u5973\u58eb\u4e0a\u8863\",\"EN\":\"Women shirts\"}"
+            "name": "女士上衣"
           }
         ]
       },
       {
         "id": 8,
-        "name":
-          "{\"CN\":\"\u5973\u88c5\u88e4\u5b50\",\"EN\":\"Women's pants\"}",
+        "name": "女装裤子",
         "children": [
           {
             "id": 10,
-            "name": "{\"CN\":\"\u725b\u4ed4\u88e4\",\"EN\":\"Jeans\"}"
+            "name": "牛仔裤"
           },
           {
             "id": 27,
-            "name":
-              "{\"CN\":\"\u5973\u58eb\u88e4\u5b50\",\"EN\":\"Women Pants\"}"
+            "name": "女士裤子"
           }
         ]
       }
@@ -63,93 +59,85 @@
   },
   {
     "id": 11,
-    "name": "{\"CN\":\"\u7535\u5b50\u8bbe\u5907\",\"EN\":\"Electronics\"}",
+    "name": "电子设备",
     "children": [
       {
         "id": 12,
-        "name": "{\"CN\":\"\u624b\u673a\",\"EN\":\"Mobile Phone\"}",
+        "name": "手机",
         "children": []
       },
       {
         "id": 22,
-        "name": "{\"CN\":\"\u5e73\u677f\u7535\u8111\",\"EN\":\"Tablets\"}",
+        "name": "平板电脑",
         "children": []
       },
       {
         "id": 23,
-        "name":
-          "{\"CN\":\"\u6570\u7801\u76f8\u673a\",\"EN\":\"Digital Cameras\"}",
+        "name": "数码相机",
         "children": []
       },
       {
         "id": 24,
-        "name":
-          "{\"CN\":\"\u7b14\u8bb0\u672c\u7535\u8111\",\"EN\":\"Laptops\"}",
+        "name": "笔记本电脑",
         "children": []
       }
     ]
   },
   {
     "id": 15,
-    "name": "{\"CN\":\"\u5a31\u4e50\u751f\u6d3b\",\"EN\":\"Entertainment\"}",
+    "name": "娱乐生活",
     "children": [
       {
         "id": 16,
-        "name":
-          "{\"CN\":\"\u65c5\u884c\u4f4f\u5bbf\",\"EN\":\"Travel and Accommodation\"}",
+        "name": "旅行住宿",
         "children": []
       },
       {
         "id": 17,
-        "name":
-          "{\"CN\":\"\u4f18\u60e0\u5238\u4e0e\u95e8\u7968\",\"EN\":\"Voucher and Ticket\"}",
+        "name": "优惠券与门票",
         "children": []
       }
     ]
   },
   {
     "id": 18,
-    "name": "{\"CN\":\"\u624b\u8868\",\"EN\":\"Watches\"}",
+    "name": "手表",
     "children": [
       {
         "id": 20,
-        "name":
-          "{\"CN\":\"\u7537\u58eb\u624b\u8868\",\"EN\":\"Men's Watches\"}",
+        "name": "男士手表",
         "children": []
       },
       {
         "id": 21,
-        "name":
-          "{\"CN\":\"\u5973\u58eb\u624b\u8868\",\"EN\":\"Women's Watches\"}",
+        "name": "女士手表",
         "children": []
       }
     ]
   },
   {
     "id": 19,
-    "name": "{\"CN\":\"\u9999\u6c34\",\"EN\":\"Perfume\"}",
+    "name": "香水",
     "children": [
       {
         "id": 36,
-        "name": "{\"CN\":\"\u54c1\u724c\u9999\u6c34\",\"EN\":\"Perfume\"}",
+        "name": "品牌香水",
         "children": []
       }
     ]
   },
   {
     "id": 28,
-    "name": "{\"CN\":\"\u65f6\u5c1a\u7bb1\u5305\",\"EN\":\"Fashion bags\"}",
+    "name": "时尚箱包",
     "children": [
       {
         "id": 29,
-        "name":
-          "{\"CN\":\"\u6f6e\u6d41\u5973\u5305\",\"EN\":\"Fashion Women's handbags\"}",
+        "name": "潮流女包",
         "children": []
       },
       {
         "id": 30,
-        "name":
-          "{\"CN\":\"\u7cbe\u54c1\u7537\u5305\",\"EN\":\"Boutique men's bag\"}",
+        "name": "精品男包",
         "children": []
       }
     ]

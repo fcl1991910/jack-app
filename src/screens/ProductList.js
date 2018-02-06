@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import ItemTable from "../components/ItemTable";
+import albums from "../json/albums.json";
 
 class ProductList extends Component {
   constructor() {
@@ -24,19 +25,14 @@ class ProductList extends Component {
   });
 
   componentWillMount() {
-    axios
-      .get("https://rallycoding.herokuapp.com/api/music_albums")
-      .then(response => {
-        let products = [];
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        this.setState({
-          items: products
-        });
-      })
-      .catch(error => console.log(error));
+    let products = [];
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    this.setState({
+      items: products
+    });
   }
 
   onLearnMore = item => {
@@ -47,7 +43,7 @@ class ProductList extends Component {
     return (
       <ItemTable
         styles={styles_itemtable}
-        onLearnMore={(item) => this.onLearnMore(item)}
+        onLearnMore={item => this.onLearnMore(item)}
         items={this.state.items}
       />
     );

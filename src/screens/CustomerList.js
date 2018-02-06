@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import axios from "axios";
+import albums from "../json/albums.json";
 
 class CustomerList extends Component {
   constructor() {
@@ -19,24 +20,19 @@ class CustomerList extends Component {
     };
   }
 
-  static navigationOptions = ({navigation}) => ({
-    title: '客户'
+  static navigationOptions = ({ navigation }) => ({
+    title: "客户"
   });
 
   componentWillMount() {
-    axios
-      .get("https://rallycoding.herokuapp.com/api/music_albums")
-      .then(response => {
-        let products = [];
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        products = products.concat(response.data);
-        this.setState({
-          items: products
-        });
-      })
-      .catch(error => console.log(error));
+    let products = [];
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    this.setState({
+      items: products
+    });
   }
 
   //_renderItem = ({ item }) => <ProductSimple key={item.title} item={item} />; //FlatList  FlatList  FlatList  FlatList  FlatList  FlatList
@@ -48,16 +44,16 @@ class CustomerList extends Component {
   render() {
     let customers = [];
     let customers_size = 0;
-      for(var key in this.state.items){
-        let item = this.state.items[key];
-        customers.push(
-        <ListItem 
-        key={customers_size++}
-        roundAvatar
-        avatar={{uri:item.image}}
-        title={item.title}
-        subtitle={item.artist}
-        onPress={()=>this.onLearnMore(item)}
+    for (var key in this.state.items) {
+      let item = this.state.items[key];
+      customers.push(
+        <ListItem
+          key={customers_size++}
+          roundAvatar
+          avatar={{ uri: item.image }}
+          title={item.name}
+          subtitle={item.artist}
+          onPress={() => this.onLearnMore(item)}
         />
       );
     }
@@ -74,7 +70,7 @@ class CustomerList extends Component {
 const styles = StyleSheet.create({
   ScrollView: {
     //flex: 1
-  },
+  }
 });
 
 export default CustomerList;

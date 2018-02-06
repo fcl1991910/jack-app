@@ -7,7 +7,7 @@ import CardSection from './CardSection';
 import Button from './Button';
 
 const ProductSimple = ({ item }) => {
-  const { title, artist, thumbnail_image, image, url } = item;
+  const { name, artist, thumbnail_image, image, url } = item;
   const {
     thumbnailStyle,
     headerContentStyle,
@@ -25,7 +25,7 @@ const ProductSimple = ({ item }) => {
             source={{ uri: thumbnail_image }} />
         </View>
         <View style={headerContentStyle}>
-          <Text style={headerTextStyle}>{title}</Text>
+          <Text style={headerTextStyle}>{name}</Text>
           <Text>{artist}</Text>
         </View>
       </CardSection>

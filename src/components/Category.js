@@ -24,16 +24,18 @@ export const Subcategory = props => {
   let subCategories = [];
   for (let i = 0; i < subCate.length; i++) {
     let value1 = subCate[i];
-    let subsubCategories = [];
-    if (value1.children) {
-      for (let j = 0; j < value1.children.length; j++) {
-        value2 = value1.children[j];
-        subsubCategories.push();
-      }
-    }
+    let subsubCategories = (
+      <ItemTable
+        styles={styles_itemtable}
+        onLearnMore={item => props.onLearnMore(item)}
+        items={value1.children}
+      />
+    );
     subCategories.push(
       <View key={i} style={styles.subCategories}>
-        <Text style={styles.subCategoriesText}>{JSON.parse(value1.name).CN}</Text>
+        <Text style={styles.subCategoriesText}>
+          {value1.name}
+        </Text>
         <View style={styles.subCategoriesView}>{subsubCategories}</View>
       </View>
     );
@@ -59,7 +61,7 @@ class Category extends Component {
       routes.push({
         index: i,
         key: value.id.toString(),
-        title: JSON.parse(value.name).CN
+        title: value.name
       });
     }
     this.state = {
@@ -67,17 +69,6 @@ class Category extends Component {
       routes: routes
     };
   }
-
-  _renderScene = (route, navigator) => {
-    //console.log('----------------------------------',route);
-    return (
-      <Subcategory
-        key={route.route.key}
-        navigator={navigator}
-        route={route.route}
-      />
-    );
-  };
 
   _handleIndexChange = index => {};
 
@@ -91,7 +82,7 @@ class Category extends Component {
           styles={styles_tabheader}
           _changeIndex={i => this._changeIndex(i)}
         />
-        <Subcategory index={this.state.index} />
+        <Subcategory index={this.state.index} onLearnMore={item => this.props.onLearnMore(item)}/>
       </View>
     );
   }
@@ -110,16 +101,21 @@ const styles = StyleSheet.create({
   Image: {
     height: Dimensions.get("window").height * 0.12,
     width: undefined,
-    alignSelf: 'stretch'
+    alignSelf: "stretch"
   },
   subCategories: {
-    paddingTop: 15,
+    paddingTop: 15
+  },
+  subCategoriesText: {},
+  subCategoriesView: {
+    padding: 7,
+    backgroundColor: "#fff"
   }
 });
 
 const styles_tabheader = StyleSheet.create({
   tab: {
-    flex:1,
+    flex: 1,
     width: Dimensions.get("window").width * 0.23,
     flexDirection: "column",
     justifyContent: "center"
@@ -148,6 +144,40 @@ const styles_tabheader = StyleSheet.create({
   },
   tabHeader: {
     flexDirection: "column",
+    justifyContent: "space-around"
+  }
+});
+
+const styles_itemtable = StyleSheet.create({
+  touchablehighlight: {
+    marginTop: 7,
+    width: 180,
+    height: 208
+  },
+  product: {
+    flexDirection: "column",
+    width: 180,
+    height: 208,
+    backgroundColor: "#fff",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  image: { width: 180, height: 180 },
+  title: { width: 180, height: 30 },
+  text: {
+    fontSize: 20,
+    paddingBottom: 3,
+    color: "#777",
+    textAlign: "center",
+    fontWeight: "800"
+  },
+  scrollview: {
+    //flex: 1
+  },
+  product_list: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-around"
   }
 });

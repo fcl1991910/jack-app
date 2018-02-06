@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions
-} from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import Category from "../components/Category";
 import Header from "../components/Header";
@@ -45,26 +40,37 @@ class Comp extends React.Component {
     ]
   };
 
+  onLearnMore = item => {
+    this.props.navigation.navigate("SearchResult", item);
+  };
+
+  _renderScene = (route, navigator) => {
+    if (route.route.key === "Category") return <Category onLearnMore={item => this.onLearnMore(item)}/>;
+    else if (route.route.key === "first") return <FirstRoute />;
+    else if (route.route.key === "second") return <SecondRoute />;
+    else if (route.route.key === "third") return <ThirdRoute />;
+    else if (route.route.key === "fourth") return <FourthRoute />;
+  };
+
+  // _renderScene = SceneMap({
+  //   Category: Category,
+  //   first: FirstRoute,
+  //   second: SecondRoute,
+  //   third: ThirdRoute,
+  //   fourth: FourthRoute
+  // });
+
   _handleIndexChange = index => this.setState({ index });
 
   _changeIndex = index => this.setState({ index });
 
-  _renderHeader = props => <TabHeader {...props} styles={styles_tabheader} _changeIndex={(i)=>this._changeIndex(i)}/>;
-
-  // <TabBar
-  //   {...props}
-  //   labelStyle={{color:'yellow',}}
-  //   tabStyle={{backgroundColor:'#fff'}}
-  //   indicatorStyle={{backgroundColor:'#fff'}}
-  // />;
-
-  _renderScene = SceneMap({
-    Category: Category,
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-    fourth: FourthRoute
-  });
+  _renderHeader = props => (
+    <TabHeader
+      {...props}
+      styles={styles_tabheader}
+      _changeIndex={i => this._changeIndex(i)}
+    />
+  );
 
   render() {
     return (
@@ -114,8 +120,8 @@ const styles_tabheader = StyleSheet.create({
   tabHeader: {
     flexDirection: "row",
     justifyContent: "center",
-    height: 34,
-  },
+    height: 34
+  }
 });
 
 export default Comp;

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 const ItemTable = props => {
+  //console.log('----------------------',props,'--------------');
   const {
     touchablehighlight,
     product,
@@ -21,9 +22,11 @@ const ItemTable = props => {
   } = props.styles;
   let items = [];
   let items_size = 0;
-  console.log(props.items);
   for (var key in props.items) {
     let item = props.items[key];
+    console.log(item.image);
+    var image
+    var image = require('./my-icon-active.png');
     items.push(
       <TouchableHighlight
         style={touchablehighlight}
@@ -33,7 +36,7 @@ const ItemTable = props => {
         <View style={product}>
           <Image style={image} source={{ uri: item.image }} />
           <View style={title}>
-            <Text style={text}>{item.title}</Text>
+            <Text style={text}>{item.name}</Text>
           </View>
         </View>
       </TouchableHighlight>

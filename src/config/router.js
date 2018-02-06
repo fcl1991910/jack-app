@@ -9,48 +9,7 @@ import CustomerList from "../screens/CustomerList";
 import Customer from "../screens/Customer";
 import Order from "../screens/Order";
 import User from "../screens/User";
-
-// export const ProductStack = StackNavigator({
-//   ProductList: {
-//     screen: ProductList,
-//     navigationOptions: {
-//       title: '产品列表'
-//     }
-//   },
-//   Product: {
-//     screen: Product,
-//   }
-// });
-
-// export const CustomerStack = StackNavigator({
-//   CustomerList: {
-//     screen: CustomerList,
-//     navigationOptions: {
-//       title: '客户列表'
-//     }
-//   },
-//   Customer: {
-//     screen: Customer,
-//   }
-// });
-
-// export const OrderStack = StackNavigator({
-//   Order: {
-//     screen: Order,
-//     navigationOptions: {
-//       title: '订单'
-//     }
-//   }
-// });
-
-// export const UserStack = StackNavigator({
-//   User: {
-//     screen: User,
-//     navigationOptions: {
-//       title: '用户'
-//     }
-//   }
-// });
+import SearchResult from "../screens/SearchResult";
 
 export const Tabs = TabNavigator(
   {
@@ -114,5 +73,8 @@ export const Stacks = StackNavigator({
   },
   Customer: {
     screen: Customer
+  },
+  SearchResult: {
+    screen: SearchResult
   }
 });
