@@ -11,6 +11,7 @@ import {
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
 import TabHeader from "../components/TabHeader";
+import ItemTable from "../components/ItemTable";
 
 const initialLayout = {
   height: 0,
@@ -27,13 +28,13 @@ export const Subcategory = props => {
     if (value1.children) {
       for (let j = 0; j < value1.children.length; j++) {
         value2 = value1.children[j];
-        console.log(value2);
+        subsubCategories.push();
       }
     }
     subCategories.push(
       <View key={i} style={styles.subCategories}>
-        <Text>{JSON.parse(value1.name).CN}</Text>
-        {subsubCategories}
+        <Text style={styles.subCategoriesText}>{JSON.parse(value1.name).CN}</Text>
+        <View style={styles.subCategoriesView}>{subsubCategories}</View>
       </View>
     );
   }
@@ -78,28 +79,11 @@ class Category extends Component {
     );
   };
 
-  _renderHeader = props => (
-    <TabHeader
-      {...props}
-      styles={styles_tabheader}
-      _changeIndex={i => this._changeIndex(i)}
-    />
-  );
-
   _handleIndexChange = index => {};
 
   _changeIndex = index => this.setState({ index });
 
   render() {
-    //console.log(this.state.categories);
-    // <TabViewAnimated
-    //     style={styles.container}
-    //     navigationState={this.state}
-    //     renderScene={this._renderScene}
-    //     renderHeader={this._renderHeader}
-    //     onIndexChange={this._handleIndexChange}
-    //     initialLayout={initialLayout}
-    //   />
     return (
       <View style={styles.container}>
         <TabHeader
@@ -124,7 +108,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f7f7"
   },
   Image: {
-    height: 90,
+    height: Dimensions.get("window").height * 0.12,
     width: undefined,
     alignSelf: 'stretch'
   },
@@ -135,7 +119,7 @@ const styles = StyleSheet.create({
 
 const styles_tabheader = StyleSheet.create({
   tab: {
-    height: 46,
+    flex:1,
     width: Dimensions.get("window").width * 0.23,
     flexDirection: "column",
     justifyContent: "center"
@@ -164,7 +148,7 @@ const styles_tabheader = StyleSheet.create({
   },
   tabHeader: {
     flexDirection: "column",
-    height: 34
+    justifyContent: "space-around"
   }
 });
 
