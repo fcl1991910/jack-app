@@ -5,7 +5,8 @@ import {
   ScrollView,
   Text,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  Image
 } from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
@@ -17,8 +18,35 @@ const initialLayout = {
 };
 
 export const Subcategory = props => {
-  //console.log('------------',props.route.index,'~~~~~~~~~~');
-  return <View style={[styles.container, { backgroundColor: "#ff8" }]} />;
+  let subCate = categories[props.index]["children"];
+  if (!subCate) return;
+  let subCategories = [];
+  for (let i = 0; i < subCate.length; i++) {
+    let value1 = subCate[i];
+    let subsubCategories = [];
+    if (value1.children) {
+      for (let j = 0; j < value1.children.length; j++) {
+        value2 = value1.children[j];
+        console.log(value2);
+      }
+    }
+    subCategories.push(
+      <View key={i} style={styles.subCategories}>
+        <Text>{JSON.parse(value1.name).CN}</Text>
+        {subsubCategories}
+      </View>
+    );
+  }
+  return (
+    <ScrollView style={styles.ScrollView}>
+      <Image
+        style={styles.Image}
+        source={require("../img/daily-deal-bg.jpg")}
+        resizeMode="cover"
+      />
+      {subCategories}
+    </ScrollView>
+  );
 };
 
 class Category extends Component {
@@ -50,7 +78,13 @@ class Category extends Component {
     );
   };
 
-  _renderHeader = props => <TabHeader {...props} styles={styles_tabheader} _changeIndex={(i)=>this._changeIndex(i)}/>;
+  _renderHeader = props => (
+    <TabHeader
+      {...props}
+      styles={styles_tabheader}
+      _changeIndex={i => this._changeIndex(i)}
+    />
+  );
 
   _handleIndexChange = index => {};
 
@@ -58,15 +92,23 @@ class Category extends Component {
 
   render() {
     //console.log(this.state.categories);
+    // <TabViewAnimated
+    //     style={styles.container}
+    //     navigationState={this.state}
+    //     renderScene={this._renderScene}
+    //     renderHeader={this._renderHeader}
+    //     onIndexChange={this._handleIndexChange}
+    //     initialLayout={initialLayout}
+    //   />
     return (
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}
-      />
+      <View style={styles.container}>
+        <TabHeader
+          navigationState={this.state}
+          styles={styles_tabheader}
+          _changeIndex={i => this._changeIndex(i)}
+        />
+        <Subcategory index={this.state.index} />
+      </View>
     );
   }
 }
@@ -75,22 +117,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row"
+  },
+  ScrollView: {
+    padding: 10,
+    paddingTop: 15,
+    backgroundColor: "#f7f7f7"
+  },
+  Image: {
+    height: 90,
+    width: undefined,
+    alignSelf: 'stretch'
+  },
+  subCategories: {
+    paddingTop: 15,
   }
 });
 
 const styles_tabheader = StyleSheet.create({
   tab: {
-    height: 50,
-    width: Dimensions.get("window").width * 0.2
+    height: 46,
+    width: Dimensions.get("window").width * 0.23,
+    flexDirection: "column",
+    justifyContent: "center"
   },
   tabActive: {
-    borderBottomWidth: 1.5,
-    borderColor: "red"
+    backgroundColor: "#f7f7f7",
+    borderTopWidth: 1,
+    borderColor: "#eee"
   },
-  tabInactive: {},
+  tabInactive: {
+    backgroundColor: "#fefefe",
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    borderColor: "#eee"
+  },
   tabText: {
-    fontSize: 15,
-    padding: 8,
+    fontSize: 13,
     textAlign: "center",
     fontWeight: "500"
   },
@@ -98,12 +160,12 @@ const styles_tabheader = StyleSheet.create({
     color: "red"
   },
   tabInactiveText: {
-    color: "#666"
+    color: "#444"
   },
   tabHeader: {
     flexDirection: "column",
     height: 34
-  },
+  }
 });
 
 export default Category;
