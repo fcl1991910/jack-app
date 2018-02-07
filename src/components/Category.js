@@ -104,11 +104,16 @@ const styles = StyleSheet.create({
     alignSelf: "stretch"
   },
   subCategories: {
-    paddingTop: 15
+    paddingTop: 18
   },
-  subCategoriesText: {},
+  subCategoriesText: {
+    fontSize: 12,
+    color: "#444",
+    fontWeight: "600"
+  },
   subCategoriesView: {
     padding: 7,
+    marginTop: 7,
     backgroundColor: "#fff"
   }
 });
@@ -151,25 +156,25 @@ const styles_tabheader = StyleSheet.create({
 const styles_itemtable = StyleSheet.create({
   touchablehighlight: {
     marginTop: 7,
-    width: 180,
-    height: 208
+    width: 60,
+    height: 75
   },
   product: {
     flexDirection: "column",
-    width: 180,
-    height: 208,
+    width: 60,
+    height: 66,
     backgroundColor: "#fff",
     justifyContent: "space-between",
     alignItems: "center"
   },
-  image: { width: 180, height: 180 },
-  title: { width: 180, height: 30 },
+  image: { width: 60, height: 60 },
+  title: { width: 60, height: 15 },
   text: {
-    fontSize: 20,
-    paddingBottom: 3,
-    color: "#777",
+    fontSize: 12,
+    paddingBottom: 1,
+    color: "#666",
     textAlign: "center",
-    fontWeight: "800"
+    fontWeight: "400"
   },
   scrollview: {
     //flex: 1

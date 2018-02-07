@@ -24,9 +24,10 @@ const ItemTable = props => {
   let items_size = 0;
   for (var key in props.items) {
     let item = props.items[key];
-    console.log(item.image);
-    var image
-    var image = require('./my-icon-active.png');
+    if(item.image)
+      var image_source = { uri:item.image };
+    else
+      var image_source = require("../img/milk-powder.png");
     items.push(
       <TouchableHighlight
         style={touchablehighlight}
@@ -34,7 +35,7 @@ const ItemTable = props => {
         key={items_size++}
       >
         <View style={product}>
-          <Image style={image} source={{ uri: item.image }} />
+          <Image style={image} source={image_source} />
           <View style={title}>
             <Text style={text}>{item.name}</Text>
           </View>

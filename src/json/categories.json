@@ -7,7 +7,7 @@
         "id": 4,
         "name": "男装上衣",
         "children": [
-          { "id": 5, "name": "T恤","image":"../img/milk-powder.png" },
+          { "id": 5, "name": "T恤" },
           { "id": 6, "name": "卫衣" },
           {
             "id": 25,
