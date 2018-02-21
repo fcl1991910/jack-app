@@ -13,7 +13,16 @@ import SearchResult from "../screens/SearchResult";
 
 export const Tabs = TabNavigator(
   {
-    Screen5: {
+    User: {
+      screen: User,
+      navigationOptions: {
+        tabBarLabel: "用户中心",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="account-circle" size={35} color={tintColor} />
+        )
+      }
+    },
+    Comp: {
       screen: Comp,
       navigationOptions: {
         tabBarLabel: "组件",
@@ -22,7 +31,7 @@ export const Tabs = TabNavigator(
         )
       }
     },
-    Screen1: {
+    ProductList: {
       screen: ProductList,
       navigationOptions: {
         tabBarLabel: "产品",
@@ -31,7 +40,7 @@ export const Tabs = TabNavigator(
         )
       }
     },
-    Screen2: {
+    CustomerList: {
       screen: CustomerList,
       navigationOptions: {
         tabBarLabel: "客户",
@@ -40,21 +49,12 @@ export const Tabs = TabNavigator(
         )
       }
     },
-    Screen3: {
+    Order: {
       screen: Order,
       navigationOptions: {
         tabBarLabel: "订单",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="receipt" size={35} color={tintColor} />
-        )
-      }
-    },
-    Screen4: {
-      screen: User,
-      navigationOptions: {
-        tabBarLabel: "用户中心",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="account-circle" size={35} color={tintColor} />
         )
       }
     }
