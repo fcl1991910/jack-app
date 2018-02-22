@@ -76,5 +76,8 @@ export const Stacks = StackNavigator({
   },
   SearchResult: {
     screen: SearchResult
+  },
+  Login: {
+    screen: Login
   }
 });

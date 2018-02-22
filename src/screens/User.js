@@ -10,6 +10,8 @@ import {
   Dimensions,
   TouchableHighlight
 } from "react-native";
+import {List,ListItem} from "react-native-elements";
+import Icon from "../components/Icon";
 
 class User extends Component {
   constructor() {
@@ -36,7 +38,7 @@ class User extends Component {
             </View>
             <View style={styles.coverMetaContainer}>
               <Text style={styles.coverName}>{"Jack a.k.a CodingBaby"}</Text>
-              <Text style={styles.coverBio}>{"The Coolest"}</Text>
+              <Text style={styles.coverBio}>{"桂林人"}</Text>
             </View>
           </ImageBackground>
         </View>
@@ -68,6 +70,25 @@ class User extends Component {
     );
   };
 
+  renderListItem = (title,navigate,backgroundColor,type,name) => {
+    return (
+      <ListItem
+        title={title}
+        onPress={()=>this.onLearnMore("SearchResult")}
+        containerStyle={styles.ListItemContainer}
+        leftIcon={
+          <Icon
+            containerStyle={{backgroundColor:backgroundColor}}
+            icon={{
+              type:type,
+              name:name
+            }}
+          />
+        }
+      />
+    );
+  }
+
   render() {
     let platform;
     if (Platform.OS === "android") platform = "This is fucking android!";
@@ -85,6 +106,18 @@ class User extends Component {
           </View>
           <Text>Customer Customer Customer</Text>
           <Text>{platform}</Text>
+          <View>
+            <Text>更多</Text>
+            <List containerStyle={styles.listContainer}>
+              {this.renderListItem("提醒","Notification","#FFADF2","material","notifications")}
+              {this.renderListItem("定位","Location","#57DCE7","material","place")}
+              {this.renderListItem("关于我们","AboutUs","#A4C8F0","ionicon","md-information-circle")}
+              {this.renderListItem("条款","TermsAndPolicies","#C6C7C6","entypo","light-bulb")}
+              {this.renderListItem("分享App","Share","#C47EFF","entypo","share")}
+              {this.renderListItem("给App评分","RateUs","#FECE44","entypo","star")}
+              {this.renderListItem("提供反馈","FeedBack","#00C001","materialicon","feedback")}
+            </List>
+          </View>
         </View>
       </ScrollView>
     );
@@ -183,6 +216,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
     fontWeight: "600"
+  },
+  listContainer: {
+    borderTopColor: '#f4f4f4',
+  },
+  ListItemContainer: {
+    borderBottomColor: '#f4f4f4',
   }
 });
 
