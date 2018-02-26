@@ -10,7 +10,7 @@ import {
   Dimensions,
   TouchableHighlight
 } from "react-native";
-import {List,ListItem} from "react-native-elements";
+import { List, ListItem } from "react-native-elements";
 import Icon from "../components/Icon";
 
 class User extends Component {
@@ -25,7 +25,29 @@ class User extends Component {
     header: null
   });
 
+  onLearnMore = item => {
+    this.props.navigation.navigate(item);
+  };
+
   renderUserHeader = () => {
+    let username;
+    if (!true) {
+      username = (
+        <View style={styles.coverMetaContainer}>
+          <Text style={styles.coverName}>{"Jack a.k.a CodingBaby"}</Text>
+          <Text style={styles.coverBio}>{"桂林人"}</Text>
+        </View>
+      );
+    } else {
+      username = (
+        <TouchableHighlight
+          style={styles.coverMetaContainer}
+          onPress={() => this.onLearnMore("Login")}
+        >
+          <Text style={styles.login}>{"登录/注册  >"}</Text>
+        </TouchableHighlight>
+      );
+    }
     return (
       <View style={styles.user_header}>
         <View style={styles.coverContainer}>
@@ -36,10 +58,7 @@ class User extends Component {
             <View style={styles.coverTitleContainer}>
               <Text style={styles.coverTitle} />
             </View>
-            <View style={styles.coverMetaContainer}>
-              <Text style={styles.coverName}>{"Jack a.k.a CodingBaby"}</Text>
-              <Text style={styles.coverBio}>{"桂林人"}</Text>
-            </View>
+            {username}
           </ImageBackground>
         </View>
         <View style={styles.profileImageContainer}>
@@ -50,10 +69,6 @@ class User extends Component {
         </View>
       </View>
     );
-  };
-
-  onLearnMore = item => {
-    this.props.navigation.navigate(item);
   };
 
   renderStatistic = (title, count, navigate) => {
@@ -70,24 +85,24 @@ class User extends Component {
     );
   };
 
-  renderListItem = (title,navigate,backgroundColor,type,name) => {
+  renderListItem = (title, navigate, backgroundColor, type, name) => {
     return (
       <ListItem
         title={title}
-        onPress={()=>this.onLearnMore("SearchResult")}
+        onPress={() => this.onLearnMore("SearchResult")}
         containerStyle={styles.ListItemContainer}
         leftIcon={
           <Icon
-            containerStyle={{backgroundColor:backgroundColor}}
+            containerStyle={{ backgroundColor: backgroundColor }}
             icon={{
-              type:type,
-              name:name
+              type: type,
+              name: name
             }}
           />
         }
       />
     );
-  }
+  };
 
   render() {
     let platform;
@@ -109,13 +124,55 @@ class User extends Component {
           <View>
             <Text>更多</Text>
             <List containerStyle={styles.listContainer}>
-              {this.renderListItem("提醒","Notification","#FFADF2","material","notifications")}
-              {this.renderListItem("定位","Location","#57DCE7","material","place")}
-              {this.renderListItem("关于我们","AboutUs","#A4C8F0","ionicon","md-information-circle")}
-              {this.renderListItem("条款","TermsAndPolicies","#C6C7C6","entypo","light-bulb")}
-              {this.renderListItem("分享App","Share","#C47EFF","entypo","share")}
-              {this.renderListItem("给App评分","RateUs","#FECE44","entypo","star")}
-              {this.renderListItem("提供反馈","FeedBack","#00C001","materialicon","feedback")}
+              {this.renderListItem(
+                "提醒",
+                "Notification",
+                "#FFADF2",
+                "material",
+                "notifications"
+              )}
+              {this.renderListItem(
+                "定位",
+                "Location",
+                "#57DCE7",
+                "material",
+                "place"
+              )}
+              {this.renderListItem(
+                "关于我们",
+                "AboutUs",
+                "#A4C8F0",
+                "ionicon",
+                "md-information-circle"
+              )}
+              {this.renderListItem(
+                "条款",
+                "TermsAndPolicies",
+                "#C6C7C6",
+                "entypo",
+                "light-bulb"
+              )}
+              {this.renderListItem(
+                "分享App",
+                "Share",
+                "#C47EFF",
+                "entypo",
+                "share"
+              )}
+              {this.renderListItem(
+                "给App评分",
+                "RateUs",
+                "#FECE44",
+                "entypo",
+                "star"
+              )}
+              {this.renderListItem(
+                "提供反馈",
+                "FeedBack",
+                "#00C001",
+                "materialicon",
+                "feedback"
+              )}
             </List>
           </View>
         </View>
@@ -170,6 +227,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  login: {
+    color: "#FFF",
+    fontSize: 25,
+    fontWeight: "bold"
+  },
   coverTitleContainer: {
     backgroundColor: "transparent",
     flex: 1,
@@ -198,7 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
   touchableContainer: {
-    flex:1
+    flex: 1
   },
   statiscticContainer: {
     flexWrap: "wrap",
@@ -218,10 +280,10 @@ const styles = StyleSheet.create({
     fontWeight: "600"
   },
   listContainer: {
-    borderTopColor: '#f4f4f4',
+    borderTopColor: "#f4f4f4"
   },
   ListItemContainer: {
-    borderBottomColor: '#f4f4f4',
+    borderBottomColor: "#f4f4f4"
   }
 });
 

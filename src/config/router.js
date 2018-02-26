@@ -10,6 +10,7 @@ import Customer from "../screens/Customer";
 import Order from "../screens/Order";
 import User from "../screens/User";
 import SearchResult from "../screens/SearchResult";
+import Login from "../screens/Login";
 
 export const Tabs = TabNavigator(
   {
