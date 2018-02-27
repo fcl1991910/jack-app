@@ -42,6 +42,7 @@ class User extends Component {
       username = (
         <TouchableHighlight
           style={styles.coverMetaContainer}
+          underlayColor="rgba(0,0,0,0)"
           onPress={() => this.onLearnMore("Login")}
         >
           <Text style={styles.login}>{"登录/注册  >"}</Text>

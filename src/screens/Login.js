@@ -6,48 +6,29 @@ import {
   ScrollView,
   TouchableHighlight
 } from "react-native";
+import LoginForm from "./LoginForm";
 
-var t = require("tcomb-form-native");
-t.form.Form.i18n = {
-  optional: "",
-  required: " (required)" // inverting the behaviour: adding a postfix to the required fields
-};
-var Form = t.form.Form;
-var type = t.struct({
-  name: t.String, // a required string
-  surname: t.maybe(t.String), // an optional string
-  age: t.Number, // a required number
-  rememberMe: t.Boolean // a boolean
-});
-var options = {
-  fields: {
-    name: {
-      label: "用户名",
-      placeholder: "用户名",
-      error: "用户名不可用"
-    },
-    surname: {
-      label: "姓氏",
-      placeholder: "姓氏",
-      help: "不用填",
-      autoCapitalize:"words",
-      clearButtonMode: "while-editing"
-    }
-  }
-};
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
-      surname: "",
-      age: 18,
-      rememberMe: false
+      type: "LOGIN",
+      value: {
+        surname: "",
+        password: "",
+        passwordAgain: "",
+        email: ""
+      }
     };
   }
 
+  getTitle() {
+    if (this.state.title) return this.state.title;
+    else return "登录";
+  }
+
   static navigationOptions = ({ navigation }) => ({
-    title: "登录"
+    title: "登录/注册"
   });
 
   onPress = () => {
@@ -57,22 +38,95 @@ class Login extends Component {
     }
   };
 
-  componentDidMount() {
-    this.refs.form.getComponent("name").refs.input.focus();
+  getMessage = (type, left) => {
+    let register = (
+      <TouchableHighlight
+        style={styles.forgotMessage}
+        underlayColor="rgba(0,0,0,0)"
+        onPress={() => {
+          this.setState({
+            type: "REGISTER"
+          });
+        }}
+      >
+        <Text style={styles.forgotText}>注册</Text>
+      </TouchableHighlight>
+    );
+    let alreadyHaveAccount = (
+      <TouchableHighlight
+        style={styles.forgotMessage}
+        underlayColor="rgba(0,0,0,0)"
+        onPress={() => {
+          this.setState({
+            type: "LOGIN"
+          });
+        }}
+      >
+        <Text style={styles.forgotText}>已经有账号？</Text>
+      </TouchableHighlight>
+    );
+    let forgotPassword = (
+      <TouchableHighlight
+        style={styles.forgotMessage}
+        underlayColor="rgba(0,0,0,0)"
+        onPress={() => {
+          this.setState({
+            type: "FORGOTPASSWORD"
+          });
+        }}
+      >
+        <Text style={styles.forgotText}>忘记密码</Text>
+      </TouchableHighlight>
+    );
+    switch (type) {
+      case "LOGIN":
+        if (left) return register;
+        else return forgotPassword;
+      case "REGISTER":
+        if (left) return forgotPassword;
+        else return alreadyHaveAccount;
+      case "FORGOTPASSWORD":
+        if (left) return register;
+        else return alreadyHaveAccount;
+    }
+  };
+
+  getButtonText() {
+    switch (this.state.type) {
+      case "LOGIN":
+        return "登录";
+      case "REGISTER":
+        return "注册";
+      case "FORGOTPASSWORD":
+        return "重置密码";
+    }
   }
 
   render() {
+    let leftMessage = this.getMessage(this.state.type, true);
+    let rightMessage = this.getMessage(this.state.type, false);
+    let buttonText = this.getButtonText();
     return (
       <View style={styles.container}>
         <ScrollView>
-          <Form ref="form" onChange={this.onChange} type={type} options={options} value={this.state} />
+          <View>
+            <LoginForm
+              ref="form"
+              type={this.state.type}
+              value={this.state.value}
+            />
+          </View>
           <TouchableHighlight
             style={styles.button}
             onPress={this.onPress}
             underlayColor="#99d9f4"
           >
-            <Text style={styles.buttonText}>登录</Text>
+            <Text style={styles.buttonText}>{buttonText}</Text>
           </TouchableHighlight>
+          <View style={styles.forgotContainer}>
+            {leftMessage}
+            {rightMessage}
+          </View>
         </ScrollView>
       </View>
     );
@@ -105,6 +159,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: "stretch",
     justifyContent: "center"
+  },
+  forgotContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 7
+  },
+  forgotMessage: {
+    //backgroundColor:"#ff7",
+    justifyContent: "center",
+    height: 36,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  forgotText: {
+    fontSize: 15,
+    alignSelf: "center"
   }
 });
 
