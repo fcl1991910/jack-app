@@ -12,7 +12,18 @@ import {
 } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import Icon from "../components/Icon";
+import { connect } from "react-redux";
+import { LOGIN } from "../constants/actionTypes";
 
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({
+  onGetUserInfo: value =>
+    dispatch({
+      type: LOGIN,
+      payload: { username: "Jack a.k.a CodingBaby", title: "桂林人" }
+    }),
+});
 class User extends Component {
   constructor() {
     super();
@@ -26,16 +37,18 @@ class User extends Component {
   });
 
   onLearnMore = item => {
+    //this.props.onGetUserInfo("1");
     this.props.navigation.navigate(item);
   };
 
   renderUserHeader = () => {
+    console.log(this.props);
     let username;
-    if (!true) {
+    if (this.props.username) {
       username = (
         <View style={styles.coverMetaContainer}>
-          <Text style={styles.coverName}>{"Jack a.k.a CodingBaby"}</Text>
-          <Text style={styles.coverBio}>{"桂林人"}</Text>
+          <Text style={styles.coverName}>{this.props.username}</Text>
+          <Text style={styles.coverBio}>{this.props.title}</Text>
         </View>
       );
     } else {
@@ -288,4 +301,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default User;
+export default connect(mapStateToProps, mapDispatchToProps)(User);
+//export default User;

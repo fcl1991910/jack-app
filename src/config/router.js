@@ -14,6 +14,15 @@ import Login from "../screens/Login";
 
 export const Tabs = TabNavigator(
   {
+    User: {
+      screen: User,
+      navigationOptions: {
+        tabBarLabel: "用户中心",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="account-circle" size={35} color={tintColor} />
+        )
+      }
+    },
     Comp: {
       screen: Comp,
       navigationOptions: {
@@ -47,15 +56,6 @@ export const Tabs = TabNavigator(
         tabBarLabel: "订单",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="receipt" size={35} color={tintColor} />
-        )
-      }
-    },
-    User: {
-      screen: User,
-      navigationOptions: {
-        tabBarLabel: "用户中心",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="account-circle" size={35} color={tintColor} />
         )
       }
     },

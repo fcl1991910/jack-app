@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import * as recipesRecucer from './recipes';
+import auth from './auth';
+import products from './products';
 
-export default combineReducers(Object.assign(
-  recipesRecucer,
-));
+export default combineReducers({
+  auth,
+  products
+});
