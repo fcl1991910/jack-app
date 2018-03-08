@@ -9,6 +9,7 @@ import {
   TouchableHighlight
 } from "react-native";
 
+//组件
 const ItemTable = props => {
   //console.log('----------------------',props,'--------------');
   const {

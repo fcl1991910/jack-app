@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet, Dimensions, Image, TouchableHighlight } from "react-native";
 import { Icon } from "react-native-elements";
 
+//组件
 const TabHeader = props => {
     const {tab,tabActive,tabInactive,tabText,tabActiveText,tabInactiveText,tabHeader} = props.styles;
     let headers = [];
