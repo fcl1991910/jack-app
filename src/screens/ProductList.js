@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import ItemTable from "../components/ItemTable";
 import albums from "../json/albums.json";
+import Header from "../components/Header";
 
 class ProductList extends Component {
   constructor() {
@@ -21,7 +22,8 @@ class ProductList extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: "产品"
+    title: "",
+    headerLeft: <Header title="产品列表"/>
   });
 
   componentWillMount() {

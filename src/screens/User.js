@@ -42,7 +42,6 @@ class User extends Component {
   };
 
   renderUserHeader = () => {
-    console.log(this.props);
     let username;
     if (this.props.username) {
       username = (

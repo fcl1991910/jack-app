@@ -11,27 +11,10 @@ import Order from "../screens/Order";
 import User from "../screens/User";
 import SearchResult from "../screens/SearchResult";
 import Login from "../screens/Login";
+import AddProduct from "../screens/AddProduct";
 
 export const Tabs = TabNavigator(
   {
-    User: {
-      screen: User,
-      navigationOptions: {
-        tabBarLabel: "用户中心",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="account-circle" size={35} color={tintColor} />
-        )
-      }
-    },
-    Comp: {
-      screen: Comp,
-      navigationOptions: {
-        tabBarLabel: "组件",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="extension" size={35} color={tintColor} />
-        )
-      }
-    },
     ProductList: {
       screen: ProductList,
       navigationOptions: {
@@ -59,6 +42,24 @@ export const Tabs = TabNavigator(
         )
       }
     },
+    User: {
+      screen: User,
+      navigationOptions: {
+        tabBarLabel: "用户中心",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="account-circle" size={35} color={tintColor} />
+        )
+      }
+    },
+    Comp: {
+      screen: Comp,
+      navigationOptions: {
+        tabBarLabel: "组件",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="extension" size={35} color={tintColor} />
+        )
+      }
+    },
   },
   {
     tabBarPosition: "bottom"
@@ -71,6 +72,9 @@ export const Stacks = StackNavigator({
   },
   Product: {
     screen: Product
+  },
+  AddProduct: {
+    screen: AddProduct
   },
   Customer: {
     screen: Customer
