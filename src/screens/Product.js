@@ -17,7 +17,7 @@ class Product extends Component {
   }
 
   static navigationOptions = ({navigation}) => ({
-    name: navigation.state.params.name
+    title: navigation.state.params.name
   });
 
   render() {

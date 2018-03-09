@@ -5,6 +5,8 @@ import Category from "../components/Category";
 import Header from "../components/Header";
 import TabHeader from "../components/TabHeader";
 import ProductList from "../screens/ProductList";
+import SearchResult from "../screens/SearchResult";
+
 const initialLayout = {
   height: 0,
   width: Dimensions.get("window").width
@@ -12,8 +14,7 @@ const initialLayout = {
 
 class AddProduct extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "",
-    headerLeft: <Header />
+    title:"添加产品"
   });
 
   state = {
@@ -21,6 +22,7 @@ class AddProduct extends React.Component {
     routes: [
       { key: "Category", title: "分类" },
       { key: "AllProduct", title: "所有商品" },
+      { key: "SearchResult", title: "搜索商品" },
     ]
   };
 
@@ -31,6 +33,7 @@ class AddProduct extends React.Component {
   _renderScene = (route, navigator) => {
     if (route.route.key === "Category") return <Category onLearnMore={item => this.onLearnMore(item)}/>;
     else if (route.route.key === "AllProduct") return <ProductList />;
+    else if (route.route.key === "SearchResult") return <SearchResult />;
   };
 
   // _renderScene = SceneMap({
@@ -79,13 +82,13 @@ const styles = StyleSheet.create({
 
 const styles_tabheader = StyleSheet.create({
   tab: {
-    width: Dimensions.get("window").width * 0.14
+    width: Dimensions.get("window").width * 0.33
   },
   tabActive: {
-    borderBottomWidth: 1.5,
-    borderColor: "red"
   },
-  tabInactive: {},
+  tabInactive: {
+    backgroundColor: "#fff"
+  },
   tabText: {
     fontSize: 15,
     padding: 8,

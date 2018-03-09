@@ -21,9 +21,21 @@ class ProductList extends Component {
     };
   }
 
+  onHelp = () => {
+    console.log("onHelp");
+  };
+
+  onSearch = () => {
+    console.log("onSearch");
+  };
+
+  onAdd = () => {
+    console.log("onAdd");
+    this.props.navigation.navigate("AddProduct");
+  };
+
   static navigationOptions = ({ navigation }) => ({
-    title: "",
-    headerLeft: <Header title="产品列表"/>
+    header: null
   });
 
   componentWillMount() {
@@ -43,11 +55,21 @@ class ProductList extends Component {
 
   render() {
     return (
-      <ItemTable
-        styles={styles_itemtable}
-        onLearnMore={item => this.onLearnMore(item)}
-        items={this.state.items}
-      />
+      <View>
+        <Header
+          title="产品列表"
+          icons={[
+            { icon: "help", onClick: () => this.onHelp() },
+            { icon: "search", onClick: () => this.onSearch() },
+            { icon: "add", onClick: () => this.onAdd() }
+          ]}
+        />
+        <ItemTable
+          styles={styles_itemtable}
+          onLearnMore={item => this.onLearnMore(item)}
+          items={this.state.items}
+        />
+      </View>
     );
   }
 }

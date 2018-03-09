@@ -25,8 +25,7 @@ const FourthRoute = () => (
 
 class Comp extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "",
-    headerLeft: <Header />
+    header: null
   });
 
   state = {
@@ -45,7 +44,8 @@ class Comp extends React.Component {
   };
 
   _renderScene = (route, navigator) => {
-    if (route.route.key === "Category") return <Category onLearnMore={item => this.onLearnMore(item)}/>;
+    if (route.route.key === "Category")
+      return <Category onLearnMore={item => this.onLearnMore(item)} />;
     else if (route.route.key === "first") return <FirstRoute />;
     else if (route.route.key === "second") return <SecondRoute />;
     else if (route.route.key === "third") return <ThirdRoute />;
@@ -74,19 +74,28 @@ class Comp extends React.Component {
 
   render() {
     return (
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}
-      />
+      <View style={styles.viewStyle}>
+        <Header
+          title=""
+          icons={[]}
+        />
+        <TabViewAnimated
+          style={styles.container}
+          navigationState={this.state}
+          renderScene={this._renderScene}
+          renderHeader={this._renderHeader}
+          onIndexChange={this._handleIndexChange}
+          initialLayout={initialLayout}
+        />
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  viewStyle: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: "#f7f7f7"
