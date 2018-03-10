@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
+  Platform,
   View,
   Text,
   StyleSheet,
@@ -51,14 +52,16 @@ const Header = props => {
   );
 };
 
+padding = (Platform.OS === "ios") && Dimensions.get("window").height === 812 ? 41 : 17;
+
 const styles = StyleSheet.create({
   viewStyle: {
-    paddingTop: 30,
+    paddingTop: padding,
     backgroundColor: "#f7f7f7",
     flexDirection: "row",
     justifyContent: "space-between",
     width: Dimensions.get("window").width,
-    height: 76
+    height: padding+46
   },
   view: {
     flex: 1,

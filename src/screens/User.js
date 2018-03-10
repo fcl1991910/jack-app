@@ -8,7 +8,8 @@ import {
   Image,
   ImageBackground,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar
 } from "react-native";
 import { List, ListItem } from "react-native-elements";
 import Icon from "../components/Icon";
@@ -22,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch({
       type: LOGIN,
       payload: { username: "Jack a.k.a CodingBaby", title: "桂林人" }
-    }),
+    })
 });
 class User extends Component {
   constructor() {
@@ -65,7 +66,7 @@ class User extends Component {
       <View style={styles.user_header}>
         <View style={styles.coverContainer}>
           <ImageBackground
-            source={require("../img/above-adventure-aerial-air.jpg")}
+            source={require("../img/thumb-1920-84631.jpg")}
             style={styles.coverImage}
           >
             <View style={styles.coverTitleContainer}>
@@ -124,10 +125,11 @@ class User extends Component {
     else platform = "This is a job!";
     return (
       <ScrollView style={styles.container}>
+        {/*<StatusBar backgroundColor="blue" barStyle="dark-content" />*/}
         {this.renderUserHeader()}
         <View style={styles.user_body}>
           <View style={styles.statiscticsContainer}>
-            {this.renderStatistic("订单", 5, "Order")}
+            {this.renderStatistic("订单", 15, "Order")}
             {this.renderStatistic("待操作", 2, "Order")}
             {this.renderStatistic("商品", 17, "ProductList")}
             {this.renderStatistic("客户", 23, "CustomerList")}

@@ -14,14 +14,13 @@ const initialLayout = {
 
 class AddProduct extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title:"添加产品"
+    title:"添加商品"
   });
 
   state = {
     index: 0,
     routes: [
       { key: "Category", title: "分类" },
-      { key: "AllProduct", title: "所有商品" },
       { key: "SearchResult", title: "搜索商品" },
     ]
   };
@@ -32,7 +31,6 @@ class AddProduct extends React.Component {
 
   _renderScene = (route, navigator) => {
     if (route.route.key === "Category") return <Category onLearnMore={item => this.onLearnMore(item)}/>;
-    else if (route.route.key === "AllProduct") return <ProductList />;
     else if (route.route.key === "SearchResult") return <SearchResult />;
   };
 
