@@ -78,32 +78,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const styles_tabheader = StyleSheet.create({
-  tab: {
-    width: Dimensions.get("window").width * 0.33
-  },
-  tabActive: {
-  },
-  tabInactive: {
-    backgroundColor: "#fff"
-  },
-  tabText: {
-    fontSize: 15,
-    padding: 8,
-    textAlign: "center",
-    fontWeight: "500"
-  },
-  tabActiveText: {
-    color: "red"
-  },
-  tabInactiveText: {
-    color: "#666"
-  },
-  tabHeader: {
-    flexDirection: "row",
-    justifyContent: "center",
-    height: 34
-  }
-});
-
 export default AddProduct;

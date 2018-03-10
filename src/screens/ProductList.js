@@ -30,8 +30,7 @@ class ProductList extends Component {
   };
 
   onAdd = () => {
-    console.log("onAdd");
-    this.props.navigation.navigate("AddProduct");
+    this.props.navigation.navigate("Category");
   };
 
   static navigationOptions = ({ navigation }) => ({

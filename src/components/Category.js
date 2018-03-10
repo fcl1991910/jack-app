@@ -12,6 +12,7 @@ import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
 import TabHeader from "../components/TabHeader";
 import ItemTable from "../components/ItemTable";
+import Header from "../components/Header";
 
 const initialLayout = {
   height: 0,
@@ -33,9 +34,7 @@ export const Subcategory = props => {
     );
     subCategories.push(
       <View key={i} style={styles.subCategories}>
-        <Text style={styles.subCategoriesText}>
-          {value1.name}
-        </Text>
+        <Text style={styles.subCategoriesText}>{value1.name}</Text>
         <View style={styles.subCategoriesView}>{subsubCategories}</View>
       </View>
     );
@@ -70,6 +69,22 @@ class Category extends Component {
     };
   }
 
+  onBack = () => {
+    this.props.navigation.goBack();
+  };
+
+  onHelp = () => {
+    console.log("onHelp");
+  };
+
+  onSearch = searchKey => {
+    console.log("search on " + searchKey + " !");
+  };
+
+  static navigationOptions = ({ navigation }) => ({
+    header: null
+  });
+
   _handleIndexChange = index => {};
 
   _changeIndex = index => this.setState({ index });
@@ -77,12 +92,22 @@ class Category extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TabHeader
-          navigationState={this.state}
-          styles={styles_tabheader}
-          _changeIndex={i => this._changeIndex(i)}
+        <Header
+          onBack={() => this.onBack()}
+          search={() => this.onSearch()}
+          icons={[{ icon: "help", onClick: () => this.onHelp() }]}
         />
-        <Subcategory index={this.state.index} onLearnMore={item => this.props.onLearnMore(item)}/>
+        <View style={styles.categoryContainer}>
+          <TabHeader
+            navigationState={this.state}
+            styles={styles_tabheader}
+            _changeIndex={i => this._changeIndex(i)}
+          />
+          <Subcategory
+            index={this.state.index}
+            onLearnMore={item => this.props.onLearnMore(item)}
+          />
+        </View>
       </View>
     );
   }
@@ -90,6 +115,9 @@ class Category extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  categoryContainer: {
     flex: 1,
     flexDirection: "row"
   },

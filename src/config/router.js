@@ -12,6 +12,7 @@ import User from "../screens/User";
 import SearchResult from "../screens/SearchResult";
 import Login from "../screens/Login";
 import AddProduct from "../screens/AddProduct";
+import Category from "../components/Category";
 
 export const Tabs = TabNavigator(
   {
@@ -76,11 +77,14 @@ export const Stacks = StackNavigator({
   AddProduct: {
     screen: AddProduct
   },
-  Customer: {
-    screen: Customer
+  Category: {
+    screen: Category
   },
   SearchResult: {
     screen: SearchResult
+  },
+  Customer: {
+    screen: Customer
   },
   Login: {
     screen: Login

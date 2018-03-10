@@ -10,12 +10,17 @@ import {
   TouchableHighlight
 } from "react-native";
 import { Icon } from "react-native-elements";
+import SearchBar from "./SearchBar";
 
 const Header = props => {
   let viewMid;
+  let viewMidStyle = {};
   if (props.title)
     viewMid = <Text style={styles.viewMidText}>{props.title}</Text>;
-  else
+  else if (props.search) {
+    viewMidStyle = { flex: 6 };
+    viewMid = <SearchBar search={() => props.onSearch()} />;
+  } else
     viewMid = (
       <Image
         style={styles.viewMidImage}
@@ -24,6 +29,18 @@ const Header = props => {
     );
   let leftIcons = [];
   let rightIcons = [];
+  if (props.onBack)
+    leftIcons.push(
+      <TouchableHighlight
+        key={-1}
+        style={styles.touchable}
+        onPress={() => props.onBack()}
+      >
+        <View style={styles.subview}>
+          <Icon name="keyboard-arrow-left" style={styles.icon} color="blue" size={35}/>
+        </View>
+      </TouchableHighlight>
+    );
   if (props.icons.length > 0) {
     for (let i = 0; i < props.icons.length; i++) {
       let value = props.icons[i];
@@ -46,13 +63,14 @@ const Header = props => {
   return (
     <View style={styles.viewStyle}>
       <View style={styles.view}>{leftIcons}</View>
-      <View style={styles.viewMid}>{viewMid}</View>
+      <View style={[styles.viewMid, viewMidStyle]}>{viewMid}</View>
       <View style={styles.view}>{rightIcons}</View>
     </View>
   );
 };
 
-padding = (Platform.OS === "ios") && Dimensions.get("window").height === 812 ? 41 : 17;
+padding =
+  Platform.OS === "ios" && Dimensions.get("window").height === 812 ? 41 : 17;
 
 const styles = StyleSheet.create({
   viewStyle: {
@@ -61,7 +79,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: Dimensions.get("window").width,
-    height: padding+46
+    height: padding + 46,
+    zIndex: 10,
   },
   view: {
     flex: 1,
@@ -74,7 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 44
+    height: 44,
   },
   viewMidImage: { width: 140, height: 44 },
   viewMidText: {
@@ -84,7 +103,8 @@ const styles = StyleSheet.create({
   touchable: {
     flexDirection: "row",
     justifyContent: "center",
-    paddingRight: 15
+    paddingLeft: 7,
+    paddingRight: 7
   },
   subview: {
     flexDirection: "row",
