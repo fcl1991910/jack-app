@@ -18,8 +18,8 @@ const Header = props => {
   if (props.title)
     viewMid = <Text style={styles.viewMidText}>{props.title}</Text>;
   else if (props.search) {
-    viewMidStyle = { flex: 6 };
-    viewMid = <SearchBar search={() => props.onSearch()} />;
+    viewMidStyle = { flex: 6,zIndex: 5};
+    viewMid = <SearchBar search={(value) => props.search(value)} searchedKey={props.searchedKey}/>;
   } else
     viewMid = (
       <Image
@@ -37,7 +37,12 @@ const Header = props => {
         onPress={() => props.onBack()}
       >
         <View style={styles.subview}>
-          <Icon name="keyboard-arrow-left" style={styles.icon} color="blue" size={35}/>
+          <Icon
+            name="keyboard-arrow-left"
+            style={styles.icon}
+            color="blue"
+            size={35}
+          />
         </View>
       </TouchableHighlight>
     );
@@ -75,12 +80,12 @@ padding =
 const styles = StyleSheet.create({
   viewStyle: {
     paddingTop: padding,
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "space-between",
     width: Dimensions.get("window").width,
     height: padding + 46,
-    zIndex: 10,
+    zIndex: 3,
   },
   view: {
     flex: 1,
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 44,
+    height: 44
   },
   viewMidImage: { width: 140, height: 44 },
   viewMidText: {

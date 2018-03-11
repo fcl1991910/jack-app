@@ -78,7 +78,7 @@ class Category extends Component {
   };
 
   onSearch = searchKey => {
-    console.log("search on " + searchKey + " !");
+    this.props.navigation.navigate("SearchResult",searchKey);
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -94,7 +94,7 @@ class Category extends Component {
       <View style={styles.container}>
         <Header
           onBack={() => this.onBack()}
-          search={() => this.onSearch()}
+          search={(value) => this.onSearch(value)}
           icons={[{ icon: "help", onClick: () => this.onHelp() }]}
         />
         <View style={styles.categoryContainer}>
@@ -105,7 +105,7 @@ class Category extends Component {
           />
           <Subcategory
             index={this.state.index}
-            onLearnMore={item => this.props.onLearnMore(item)}
+            onLearnMore={item => this.onSearch(item.name)}
           />
         </View>
       </View>
