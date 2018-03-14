@@ -47,13 +47,10 @@ class SearchBar extends Component {
   };
 
   render() {
-    console.log(this.props.searchedKey);
-    searchedKey = <View/>;
-    if(this.props.searchedKey)
-      searchedKey =  <View style={{flex:1}}><Text>{props.searchedKey}</Text></View>;
     let displaySearchPage = { display: "none" };
     let displaySearchOptions = { display: "none" };
     let quitButton = <View />;
+    searchedKey = <View />;
     if (this.state.onFocus) {
       quitButton = (
         <TouchableHighlight
@@ -65,6 +62,16 @@ class SearchBar extends Component {
       );
       if (this.state.searchKey) displaySearchOptions = {};
       else displaySearchPage = {};
+    }else {
+      if (this.props.searchedKey)
+      searchedKey = (
+        <TouchableHighlight style={styles.searchedKey}>
+          <View style={styles.searchedKeyView}>
+          <Text style={styles.searchedKeyText}>{this.props.searchedKey}</Text>
+          <Icon name="clear" color="white" size={12}/>
+          </View>
+        </TouchableHighlight>
+      );
     }
     let hotSearchKeys = [];
     for (let i = 0; i < this.state.hotSearchkeys.length; i++)
@@ -88,9 +95,10 @@ class SearchBar extends Component {
             <Icon name="search" color="grey" />
           </View>
           <View style={styles.textContainer}>
-          {searchedKey}
+            {searchedKey}
             <TextInput
-              placeholder="请输入关键词"
+              style={styles.textInputArea}
+              placeholder={(this.props.searchedKey&&!this.state.onFucus)?"":"请输入关键词"}
               defaultValue={this.state.searchKey}
               onChangeText={text => {
                 this.setState({
@@ -99,10 +107,11 @@ class SearchBar extends Component {
               }}
               onFocus={() => {
                 this.setState({
-                  onFocus: true
+                  onFocus: true,
+                  searchKey: (this.props.searchedKey)?this.props.searchedKey:""
                 });
               }}
-              onEndEditing={() => {
+              onSubmitEditing={() => {
                 this.props.search(this.state.searchKey);
               }}
             />
@@ -115,8 +124,12 @@ class SearchBar extends Component {
           </View>
         </View>
         {quitButton}
-        <ScrollView style={[styles.searchPageContainer, displaySearchOptions]}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          style={[styles.searchPageContainer, displaySearchOptions]}
+        >
           <FlatList
+            keyboardShouldPersistTaps="always"
             style={{ marginTop: 10 }}
             data={this.state.SearchOptions}
             renderItem={({ item }) => (
@@ -134,13 +147,17 @@ class SearchBar extends Component {
             keyExtractor={item => item}
           />
         </ScrollView>
-        <ScrollView style={[styles.searchPageContainer, displaySearchPage]}>
+        <ScrollView
+          keyboardShouldPersistTaps="always"
+          style={[styles.searchPageContainer, displaySearchPage]}
+        >
           <View style={styles.hotSearchContainer}>
             <View style={styles.hotSearchTitleContainer}>
               <Text style={styles.TitleText}>热搜</Text>
             </View>
             <View style={styles.hotSearchKeyContainer}>
               <ScrollView
+                keyboardShouldPersistTaps="always"
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 style={styles.hotSearchKeyScrollView}
@@ -153,6 +170,7 @@ class SearchBar extends Component {
             <View style={styles.gapContainer} />
             <View style={styles.historyContainer}>
               <FlatList
+                keyboardShouldPersistTaps="always"
                 ListHeaderComponent={() => (
                   <View style={styles.historyHeader}>
                     <Text style={styles.historyHeaderText}>历史搜索</Text>
@@ -212,7 +230,30 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 7,
-    justifyContent: "center"
+    flexDirection: "row",
+    zIndex:1
+  },
+  textInputArea: {
+    flex:1,
+  },
+  searchedKey: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  searchedKeyView: {
+    paddingVertical:4,
+    paddingHorizontal: 5,
+    flexDirection: "row",
+    backgroundColor: "#888",
+    borderColor: "#888",
+    borderRadius: 3,
+    borderWidth: 1,
+  },
+  searchedKeyText: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "400",
+    marginRight:4
   },
   imageContainer: {
     flex: 1,

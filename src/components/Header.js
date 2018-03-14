@@ -38,7 +38,7 @@ const Header = props => {
       >
         <View style={styles.subview}>
           <Icon
-            name="keyboard-arrow-left"
+            name="navigate-before"
             style={styles.icon}
             color="blue"
             size={35}
