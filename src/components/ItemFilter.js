@@ -21,6 +21,18 @@ class ItemFilter extends Component {
     this.optionPage = [];
   }
 
+  showSelected(selecteds){
+    let result = "";
+    for(let i =0; i<selecteds.length; i++ ){
+      if(i>0)
+        result+=',';
+      result+=selecteds[i];
+    }
+    if(result.length>3)
+      result = result.substring(0,3) + "..";
+    return result;
+  }
+
   renderFilter = filter => {
     switch (filter.type) {
       case "select":
@@ -56,11 +68,11 @@ class ItemFilter extends Component {
               >
                 {filter.selected.length === 0
                   ? filter.filter
-                  : filter.selected[0]}
+                  : this.showSelected(filter.selected)}
               </Text>
               <Icon
                 name={filter.state ? "arrow-drop-up" : "arrow-drop-down"}
-                color="#888"
+                color={filter.selected.length === 0?"#888":"red"}
               />
             </View>
           </TouchableHighlight>
@@ -165,7 +177,7 @@ const styles = StyleSheet.create({
     paddingRight: 3
   },
   selectContainerWithOptions: {
-    borderColor: "red",
+    borderColor: "#fff",
     backgroundColor: "#fff"
   },
   selectText: {},

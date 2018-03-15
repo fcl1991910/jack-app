@@ -40,6 +40,25 @@ class SearchBar extends Component {
     };
   }
 
+  propsclearSearch = () => {
+    this.focus(true);
+  };
+
+  focus(onClear) {
+    console.log(onClear);
+    this.nameInput.focus();
+    if (onClear)
+      this.setState({
+        onFocus: true,
+        searchKey: ""
+      });
+    else
+      this.setState({
+        onFocus: true,
+        searchKey: this.props.searchedKey ? this.props.searchedKey : ""
+      });
+  }
+
   quitSearch = () => {
     const field = TextInput.State.currentlyFocusedField();
     TextInput.State.blurTextInput(field);
@@ -62,16 +81,21 @@ class SearchBar extends Component {
       );
       if (this.state.searchKey) displaySearchOptions = {};
       else displaySearchPage = {};
-    }else {
+    } else {
       if (this.props.searchedKey)
-      searchedKey = (
-        <TouchableHighlight style={styles.searchedKey}>
-          <View style={styles.searchedKeyView}>
-          <Text style={styles.searchedKeyText}>{this.props.searchedKey}</Text>
-          <Icon name="clear" color="white" size={12}/>
-          </View>
-        </TouchableHighlight>
-      );
+        searchedKey = (
+          <TouchableHighlight
+            style={styles.searchedKey}
+            onPress={() => this.propsclearSearch()}
+          >
+            <View style={styles.searchedKeyView}>
+              <Text style={styles.searchedKeyText}>
+                {this.props.searchedKey}
+              </Text>
+              <Icon name="clear" color="white" size={12} />
+            </View>
+          </TouchableHighlight>
+        );
     }
     let hotSearchKeys = [];
     for (let i = 0; i < this.state.hotSearchkeys.length; i++)
@@ -90,39 +114,50 @@ class SearchBar extends Component {
       );
     return (
       <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <View style={styles.iconContainer}>
-            <Icon name="search" color="grey" />
+        <TouchableHighlight
+          style={{ flex: 1 }}
+          onPress={() => this.focus(false)}
+        >
+          <View style={styles.searchContainer}>
+            <View style={styles.iconContainer}>
+              <Icon name="search" color="grey" />
+            </View>
+            <View style={styles.textContainer}>
+              {searchedKey}
+              <TextInput
+                ref={input => {
+                  this.nameInput = input;
+                }}
+                style={
+                  this.props.searchedKey && !this.state.onFocus
+                    ? { flex: 0 }
+                    : { flex: 1 }
+                }
+                returnKeyType="search"
+                placeholder={
+                  this.props.searchedKey && !this.state.onFucus
+                    ? ""
+                    : "请输入关键词"
+                }
+                defaultValue={this.state.searchKey}
+                onChangeText={text => {
+                  this.setState({
+                    searchKey: text
+                  });
+                }}
+                onSubmitEditing={() => {
+                  this.props.search(this.state.searchKey);
+                }}
+              />
+            </View>
+            <View style={styles.imageContainer}>
+              <Image
+                style={{ width: 25, height: 25 }}
+                source={require("../img/freepik.png")}
+              />
+            </View>
           </View>
-          <View style={styles.textContainer}>
-            {searchedKey}
-            <TextInput
-              style={styles.textInputArea}
-              placeholder={(this.props.searchedKey&&!this.state.onFucus)?"":"请输入关键词"}
-              defaultValue={this.state.searchKey}
-              onChangeText={text => {
-                this.setState({
-                  searchKey: text
-                });
-              }}
-              onFocus={() => {
-                this.setState({
-                  onFocus: true,
-                  searchKey: (this.props.searchedKey)?this.props.searchedKey:""
-                });
-              }}
-              onSubmitEditing={() => {
-                this.props.search(this.state.searchKey);
-              }}
-            />
-          </View>
-          <View style={styles.imageContainer}>
-            <Image
-              style={{ width: 25, height: 25 }}
-              source={require("../img/freepik.png")}
-            />
-          </View>
-        </View>
+        </TouchableHighlight>
         {quitButton}
         <ScrollView
           keyboardShouldPersistTaps="always"
@@ -231,29 +266,29 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 7,
     flexDirection: "row",
-    zIndex:1
+    zIndex: 1
   },
   textInputArea: {
-    flex:1,
+    flex: 1
   },
   searchedKey: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   searchedKeyView: {
-    paddingVertical:4,
+    paddingVertical: 4,
     paddingHorizontal: 5,
     flexDirection: "row",
     backgroundColor: "#888",
     borderColor: "#888",
     borderRadius: 3,
-    borderWidth: 1,
+    borderWidth: 1
   },
   searchedKeyText: {
     color: "white",
     fontSize: 15,
     fontWeight: "400",
-    marginRight:4
+    marginRight: 4
   },
   imageContainer: {
     flex: 1,
