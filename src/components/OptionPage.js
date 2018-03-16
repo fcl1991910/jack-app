@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   options: {
     flexDirection: "row",
     flexWrap: "wrap",
-    backgroundColor: "rgba(255,255,255,0.9)"
+    backgroundColor: "rgba(255,255,255,0.95)"
   },
   option: {
     flexDirection: "row",

@@ -1,13 +1,22 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableHighlight, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Dimensions
+} from "react-native";
 import Header from "../components/Header";
 import { Icon } from "react-native-elements";
 import ItemFilter from "../components/ItemFilter";
+import albums from "../json/albums.json";
+import ItemTable from "../components/ItemTable";
 
 class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      items: [],
       brands: ["UGG", "贝拉美", "A2", "NUK", "Bioisland"],
       types: [
         "奶粉",
@@ -24,6 +33,17 @@ class SearchResult extends Component {
       sale: false,
       price: false // ascend/descend/false
     };
+  }
+
+  componentWillMount() {
+    let products = [];
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    products = products.concat(albums);
+    this.setState({
+      items: products
+    });
   }
 
   onBack = () => {
@@ -54,33 +74,33 @@ class SearchResult extends Component {
     });
   };
 
-  onSetBrand = (value) => {
+  onSetBrand = value => {
     this.setState({
-      brand_selected:value,
+      brand_selected: value,
       show_brands: false
     });
-  }
+  };
 
-  onSetType = (value) => {
+  onSetType = value => {
     this.setState({
-      type_selected:value,
+      type_selected: value,
       show_type: false
     });
-  }
+  };
 
   onResetBrand = () => {
     this.setState({
-      brand_selected:[],
+      brand_selected: [],
       show_brands: false
     });
-  }
+  };
 
   onResetType = () => {
     this.setState({
-      type_selected:[],
+      type_selected: [],
       show_type: false
     });
-  }
+  };
 
   onSale = () => {
     this.setState(prevState => {
@@ -112,6 +132,10 @@ class SearchResult extends Component {
     });
   };
 
+  onLearnMore = item => {
+    this.props.navigation.navigate("Product", item);
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -127,8 +151,8 @@ class SearchResult extends Component {
               filter: "品牌",
               type: "select",
               onClick: () => this.onBrand(),
-              onSet: (value)=>this.onSetBrand(value),
-              onReset: ()=>this.onResetBrand(),
+              onSet: value => this.onSetBrand(value),
+              onReset: () => this.onResetBrand(),
               options: this.state.brands,
               selected: this.state.brand_selected,
               state: this.state.show_brands
@@ -137,8 +161,8 @@ class SearchResult extends Component {
               filter: "类型",
               type: "select",
               onClick: () => this.onType(),
-              onSet: (value)=>this.onSetType(value),
-              onReset: ()=>this.onResetType(),
+              onSet: value => this.onSetType(value),
+              onReset: () => this.onResetType(),
               options: this.state.types,
               selected: this.state.type_selected,
               state: this.state.show_type
@@ -156,7 +180,11 @@ class SearchResult extends Component {
               state: this.state.price
             }}
           />
-          <View style={styles.resultContainer}><Text>afasva</Text></View>
+          <ItemTable
+            styles={styles_itemtable}
+            onLearnMore={item => this.onLearnMore(item)}
+            items={this.state.items}
+          />
         </View>
       </View>
     );
@@ -174,7 +202,41 @@ const styles = StyleSheet.create({
   },
   resultContainer: {
     backgroundColor: "#ff7",
-    flex:1,
+    flex: 1
+  }
+});
+
+const styles_itemtable = StyleSheet.create({
+  touchablehighlight: {
+    marginTop: 7,
+    width: 180,
+    height: 208
+  },
+  product: {
+    flexDirection: "column",
+    width: 180,
+    height: 208,
+    backgroundColor: "#fff",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  image: { width: 180, height: 180 },
+  title: { width: 180, height: 30 },
+  text: {
+    fontSize: 20,
+    paddingBottom: 3,
+    color: "#777",
+    textAlign: "center",
+    fontWeight: "800"
+  },
+  scrollview: {
+    //flex: 1
+  },
+  product_list: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   }
 });
 
