@@ -6,8 +6,41 @@ import {
   ScrollView,
   TouchableHighlight
 } from "react-native";
+import { connect } from "react-redux";
 import LoginForm from "./LoginForm";
+import * as func from "../func/func";
+import { LOGIN_ATEMPT, LOGIN_DONE, LOGIN_FAIL } from "../constants/actionTypes";
 
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({
+  onGetAccessToken: (username, password) => {
+    dispatch({
+      type: LOGIN_ATEMPT
+    });
+    func
+      .callApi("post", "oauth/token", {
+        grant_type: "password",
+        client_id: "2",
+        client_secret: "0xySnTQxUbF5xmRUiBKvPQ4Sy8Wnkh8D9FMVrrPN",
+        username: username,
+        password: password
+      })
+      .then(response => {
+        console.log("axios response:", response.data);
+        dispatch({
+          type: LOGIN_DONE,
+          payload: response.data
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: error.response.data.message
+        });
+      });
+  }
+});
 class Login extends Component {
   constructor() {
     super();
@@ -32,9 +65,19 @@ class Login extends Component {
   });
 
   onPress = () => {
+    this.props.onGetAccessToken("jack@gmail.com", "11111111a");
     var value = this.refs.form.getValue();
     if (value) {
-      console.log(value);
+      switch (this.state.type) {
+        case "LOGIN":
+          return;
+        case "REGISTER":
+          console.log("REGISTER");
+          return;
+        case "FORGOTPASSWORD":
+          console.log("FORGOTPASSWORD");
+          return;
+      }
     }
   };
 
@@ -178,4 +221,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+//export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
