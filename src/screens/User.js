@@ -48,7 +48,7 @@ class User extends Component {
       username = (
         <View style={styles.coverMetaContainer}>
           <Text style={styles.coverName}>{this.props.username}</Text>
-          <Text style={styles.coverBio}>{this.props.title}</Text>
+          <Text style={styles.coverBio}>普通用户</Text>
         </View>
       );
     } else {

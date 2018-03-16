@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   View,
@@ -27,7 +28,8 @@ const mapDispatchToProps = dispatch => ({
         password: password
       })
       .then(response => {
-        console.log("axios response:", response.data);
+        let payload = response.data;
+        payload['username'] = username;
         dispatch({
           type: LOGIN_DONE,
           payload: response.data
@@ -47,12 +49,18 @@ class Login extends Component {
     this.state = {
       type: "LOGIN",
       value: {
-        surname: "",
-        password: "",
-        passwordAgain: "",
-        email: ""
+        username: "jack@gmail.com",
+        password: "11111111",
+        passwordAgain: "11111111",
+        email: "jack@gmail.com"
       }
     };
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log(nextProps);
+    if(nextProps.access_token)
+      this.props.navigation.navigate("User");
   }
 
   getTitle() {
@@ -65,11 +73,11 @@ class Login extends Component {
   });
 
   onPress = () => {
-    this.props.onGetAccessToken("jack@gmail.com", "11111111a");
     var value = this.refs.form.getValue();
     if (value) {
       switch (this.state.type) {
         case "LOGIN":
+          this.props.onGetAccessToken(value.username, value.password);
           return;
         case "REGISTER":
           console.log("REGISTER");
@@ -151,7 +159,8 @@ class Login extends Component {
     let buttonText = this.getButtonText();
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ActivityIndicator animating={this.props.loading} color="#77f" size="small"/>
+        <ScrollView style={{shadowColor:"#000",shadowOpacity:0.95}}>
           <View>
             <LoginForm
               ref="form"
@@ -182,6 +191,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
     backgroundColor: "#ffffff"
+  },
+  loading: {
+    height:45
   },
   title: {
     fontSize: 30,

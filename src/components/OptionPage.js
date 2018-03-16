@@ -68,6 +68,7 @@ class OptionPage extends Component {
         );
     }
     return (
+      <View style={styles.container}>
       <View
         style={[
           styles.optionsContainer,
@@ -79,7 +80,7 @@ class OptionPage extends Component {
           }
         ]}
       >
-        <ScrollView>
+        <ScrollView style={styles.optionsScroll}>
           <View style={styles.options}>{options}</View>
         </ScrollView>
         <View style={styles.buttonContainer}>
@@ -97,61 +98,26 @@ class OptionPage extends Component {
           </TouchableHighlight>
         </View>
       </View>
+      <TouchableHighlight onPress={()=>this.props.onQuit()}>
+        <View  style={styles.shadowContainer}/>
+      </TouchableHighlight>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  filterContainer: {
-    zIndex: 5,
-    height: 50,
-    borderColor: "#eee",
-    borderWidth: 1,
-    flexDirection: "row"
-  },
-  touchableContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  selectContainer: {
-    borderRadius: 3,
-    borderColor: "#ddd",
-    backgroundColor: "#ddd",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingLeft: 12,
-    paddingRight: 3
-  },
-  selectContainerActive: {
-    borderRadius: 3,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: "#ddd",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 4,
-    paddingLeft: 12,
-    paddingRight: 3
-  },
-  selectText: {},
-  orderContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  orderText: {
-    fontSize: 16
-  },
-  orderIcons: {},
-  optionsContainer: {
+  container:{
     position: "absolute",
+    top: 50,
+    left: -1
+  },
+  shadowContainer:{
+    backgroundColor: "rgba(0,0,0,0.5)",
+    height: Dimensions.get("window").height,
+  },
+  optionsContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 2,
-    top: 50
   },
   buttonContainer: {
     height: 45,
@@ -178,10 +144,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600"
   },
+  optionsScroll: {
+    backgroundColor: "rgba(255,255,255,0.95)"
+  },
   options: {
     flexDirection: "row",
     flexWrap: "wrap",
-    backgroundColor: "rgba(255,255,255,0.95)"
   },
   option: {
     flexDirection: "row",

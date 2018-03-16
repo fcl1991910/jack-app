@@ -102,6 +102,13 @@ class SearchResult extends Component {
     });
   };
 
+  onQuit = () => {
+    this.setState({
+      show_brands: false,
+      show_type: false
+    });
+  }
+
   onSale = () => {
     this.setState(prevState => {
       return {
@@ -153,6 +160,7 @@ class SearchResult extends Component {
               onClick: () => this.onBrand(),
               onSet: value => this.onSetBrand(value),
               onReset: () => this.onResetBrand(),
+              onQuit: ()=> this.onQuit(),
               options: this.state.brands,
               selected: this.state.brand_selected,
               state: this.state.show_brands
@@ -163,6 +171,7 @@ class SearchResult extends Component {
               onClick: () => this.onType(),
               onSet: value => this.onSetType(value),
               onReset: () => this.onResetType(),
+              onQuit: ()=> this.onQuit(),
               options: this.state.types,
               selected: this.state.type_selected,
               state: this.state.show_type

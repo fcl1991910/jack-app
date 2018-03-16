@@ -43,6 +43,7 @@ class ItemFilter extends Component {
               selected={filter.selected}
               onReset={() => filter.onReset()}
               onSet={value => filter.onSet(value)}
+              onQuit={()=>filter.onQuit()}
             />
           );
         }
