@@ -25,8 +25,9 @@ const ItemTable = props => {
   let items_size = 0;
   for (var key in props.items) {
     let item = props.items[key];
-    if (item.image) var image_source = { uri: item.image };
+    if (item.image) var image_source = { uri: "http://wangcai.com.au/"+item.image };
     else var image_source = require("../img/milk-powder.png");
+    console.log(image_source);
     items.push(
       <TouchableHighlight
         style={touchablehighlight}

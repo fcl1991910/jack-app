@@ -8,11 +8,13 @@ import {
   TouchableHighlight,
   Image
 } from "react-native";
+import { connect } from "react-redux";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
 import TabHeader from "../components/TabHeader";
 import ItemTable from "../components/ItemTable";
 import Header from "../components/Header";
+import * as func from "../func/func";
 
 const initialLayout = {
   height: 0,
@@ -20,25 +22,26 @@ const initialLayout = {
 };
 
 export const Subcategory = props => {
-  let subCate = categories[props.index]["children"];
-  if (!subCate) return;
+  let subCate = props.data[props.index];
+  if (!subCate) return <View />;
   let subCategories = [];
-  for (let i = 0; i < subCate.length; i++) {
-    let value1 = subCate[i];
-    let subsubCategories = (
-      <ItemTable
-        styles={styles_itemtable}
-        onLearnMore={item => props.onLearnMore(item)}
-        items={value1.children}
-      />
-    );
-    subCategories.push(
-      <View key={i} style={styles.subCategories}>
-        <Text style={styles.subCategoriesText}>{value1.name}</Text>
-        <View style={styles.subCategoriesView}>{subsubCategories}</View>
-      </View>
-    );
-  }
+  if (subCate.children)
+    for (let i = 0; i < subCate.children.length; i++) {
+      let value1 = subCate.children[i];
+      let subsubCategories = (
+        <ItemTable
+          styles={styles_itemtable}
+          onLearnMore={item => props.onLearnMore(item)}
+          items={value1.children}
+        />
+      );
+      subCategories.push(
+        <View key={i} style={styles.subCategories}>
+          <Text style={styles.subCategoriesText}>{value1.name}</Text>
+          <View style={styles.subCategoriesView}>{subsubCategories}</View>
+        </View>
+      );
+    }
   return (
     <ScrollView style={styles.ScrollView}>
       <Image
@@ -51,22 +54,41 @@ export const Subcategory = props => {
   );
 };
 
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({});
 class Category extends Component {
   constructor(props) {
     super(props);
-    let routes = [];
-    for (let i = 0; i < categories.length; i++) {
-      value = categories[i];
-      routes.push({
-        index: i,
-        key: value.id.toString(),
-        title: value.name
-      });
-    }
     this.state = {
       index: 0,
-      routes: routes
+      routes: [],
+      data: []
     };
+  }
+
+  componentWillMount() {
+    console.log("Called api/category");
+    func
+      .callApi("get", "api/category", {}, this.props.access_token)
+      .then(response => {
+        let routes = [];
+        for (let i = 0; i < response.data.length; i++) {
+          value = response.data[i];
+          routes.push({
+            index: i,
+            key: value.id.toString(),
+            title: value.name
+          });
+        }
+        this.setState({
+          routes: routes,
+          data: response.data
+        });
+      })
+      .catch(error => {
+        console.log("555", error.response.data.message);
+      });
   }
 
   onBack = () => {
@@ -78,7 +100,7 @@ class Category extends Component {
   };
 
   onSearch = searchKey => {
-    this.props.navigation.navigate("SearchResult",searchKey);
+    this.props.navigation.navigate("SearchResult", searchKey);
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -94,7 +116,7 @@ class Category extends Component {
       <View style={styles.container}>
         <Header
           onBack={() => this.onBack()}
-          search={(value) => this.onSearch(value)}
+          search={value => this.onSearch(value)}
           icons={[{ icon: "help", onClick: () => this.onHelp() }]}
         />
         <View style={styles.categoryContainer}>
@@ -105,6 +127,7 @@ class Category extends Component {
           />
           <Subcategory
             index={this.state.index}
+            data={this.state.data}
             onLearnMore={item => this.onSearch(item.name)}
           />
         </View>
@@ -182,10 +205,21 @@ const styles_tabheader = StyleSheet.create({
 });
 
 const styles_itemtable = StyleSheet.create({
+  scrollview: {
+    //flex: 1
+  },
+  product_list: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
+  },
   touchablehighlight: {
     marginTop: 7,
-    width: 60,
-    height: 75
+    width: 75,
+    height: 90,
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   product: {
     flexDirection: "column",
@@ -196,7 +230,7 @@ const styles_itemtable = StyleSheet.create({
     alignItems: "center"
   },
   image: { width: 60, height: 60 },
-  title: { width: 60, height: 15 },
+  title: { width: 60, height: 30 },
   text: {
     fontSize: 12,
     paddingBottom: 1,
@@ -204,15 +238,7 @@ const styles_itemtable = StyleSheet.create({
     textAlign: "center",
     fontWeight: "400"
   },
-  scrollview: {
-    //flex: 1
-  },
-  product_list: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around"
-  }
 });
 
-export default Category;
+//export default Category;
+export default connect(mapStateToProps, mapDispatchToProps)(Category);

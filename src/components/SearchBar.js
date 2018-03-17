@@ -124,31 +124,33 @@ class SearchBar extends Component {
             </View>
             <View style={styles.textContainer}>
               {searchedKey}
-              <TextInput
-                ref={input => {
-                  this.nameInput = input;
-                }}
-                style={
-                  this.props.searchedKey && !this.state.onFocus
-                    ? { flex: 0 }
-                    : { flex: 1 }
-                }
-                returnKeyType="search"
-                placeholder={
-                  this.props.searchedKey && !this.state.onFucus
-                    ? ""
-                    : "请输入关键词"
-                }
-                defaultValue={this.state.searchKey}
-                onChangeText={text => {
-                  this.setState({
-                    searchKey: text
-                  });
-                }}
-                onSubmitEditing={() => {
-                  this.props.search(this.state.searchKey);
-                }}
-              />
+              <View style={{flex:1}} pointerEvents="none">
+                <TextInput
+                  ref={input => {
+                    this.nameInput = input;
+                  }}
+                  style={
+                    this.props.searchedKey && !this.state.onFocus
+                      ? { flex: 0 }
+                      : { flex: 1 }
+                  }
+                  returnKeyType="search"
+                  placeholder={
+                    this.props.searchedKey && !this.state.onFucus
+                      ? ""
+                      : "请输入关键词"
+                  }
+                  defaultValue={this.state.searchKey}
+                  onChangeText={text => {
+                    this.setState({
+                      searchKey: text
+                    });
+                  }}
+                  onSubmitEditing={() => {
+                    this.props.search(this.state.searchKey);
+                  }}
+                />
+              </View>
             </View>
             <View style={styles.imageContainer}>
               <Image
