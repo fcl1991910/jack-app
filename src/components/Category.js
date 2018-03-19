@@ -8,12 +8,12 @@ import {
   TouchableHighlight,
   Image
 } from "react-native";
-import { connect } from "react-redux";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
 import TabHeader from "../components/TabHeader";
 import ItemTable from "../components/ItemTable";
 import Header from "../components/Header";
+import { connect } from "react-redux";
 import * as func from "../func/func";
 
 const initialLayout = {
@@ -30,6 +30,7 @@ export const Subcategory = props => {
       let value1 = subCate.children[i];
       let subsubCategories = (
         <ItemTable
+          no_item_message="暂无分类"
           styles={styles_itemtable}
           onLearnMore={item => props.onLearnMore(item)}
           items={value1.children}
@@ -42,6 +43,12 @@ export const Subcategory = props => {
         </View>
       );
     }
+  else
+    subCategories = (
+      <View style={styles.subCategories}>
+        <Text style={styles.subCategoriesText}>暂无</Text>
+      </View>
+    );
   return (
     <ScrollView style={styles.ScrollView}>
       <Image
@@ -68,7 +75,6 @@ class Category extends Component {
   }
 
   componentWillMount() {
-    console.log("Called api/category");
     func
       .callApi("get", "api/category", {}, this.props.access_token)
       .then(response => {
@@ -87,7 +93,7 @@ class Category extends Component {
         });
       })
       .catch(error => {
-        console.log("555", error.response.data.message);
+        console.log("666", error.response.data.message);
       });
   }
 
@@ -238,6 +244,7 @@ const styles_itemtable = StyleSheet.create({
     textAlign: "center",
     fontWeight: "400"
   },
+  messageText: {}
 });
 
 //export default Category;

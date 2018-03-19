@@ -11,21 +11,20 @@ import { Icon } from "react-native-elements";
 import ItemFilter from "../components/ItemFilter";
 import albums from "../json/albums.json";
 import ItemTable from "../components/ItemTable";
+import { connect } from "react-redux";
+import * as func from "../func/func";
+
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({});
 
 class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
-      brands: ["UGG", "贝拉美", "A2", "NUK", "Bioisland"],
-      types: [
-        "奶粉",
-        "宝宝洗护",
-        "营养辅食",
-        "宝宝寝具",
-        "孕产母乳",
-        "美妆个护"
-      ],
+      brands: [],
+      types: [],
       brand_selected: [],
       type_selected: [],
       show_brands: false,
@@ -36,14 +35,36 @@ class SearchResult extends Component {
   }
 
   componentWillMount() {
-    let products = [];
-    products = products.concat(albums);
-    products = products.concat(albums);
-    products = products.concat(albums);
-    products = products.concat(albums);
-    this.setState({
-      items: products
-    });
+    func
+      .callApi(
+        "get",
+        "api/category/product/" + this.props.navigation.state.params,
+        {},
+        this.props.access_token
+      )
+      .then(response => {
+        let brands = [];
+        let types = [];
+        for (let i = 0; i < response.data.length; i++) {
+          let value = response.data[i];
+          if (value.brand && !brands.includes(value.brand))
+            brands.push(value.brand);
+          if (value.categories) {
+            let categories = JSON.parse("[" + value.categories + "]");
+            categories.forEach(function(tmp) {
+              if (!types.includes(tmp)) types.push(tmp);
+            });
+          }
+        }
+        this.setState({
+          items: response.data,
+          types: types,
+          brands: brands
+        });
+      })
+      .catch(error => {
+        console.log("555", error.response.data.message);
+      });
   }
 
   onBack = () => {
@@ -107,7 +128,7 @@ class SearchResult extends Component {
       show_brands: false,
       show_type: false
     });
-  }
+  };
 
   onSale = () => {
     this.setState(prevState => {
@@ -144,6 +165,24 @@ class SearchResult extends Component {
   };
 
   render() {
+    let items = [];
+    for (let i = 0; i < this.state.items.length; i++) {
+      let value = this.state.items[i];
+      if (
+        this.state.brand_selected.length > 0 &&
+        !this.state.brand_selected.includes(value.brand)
+      )
+        continue;
+      if (
+        this.state.type_selected.length > 0 &&
+        func.array_intersection(
+          this.state.type_selected,
+          JSON.parse("[" + value.categories + "]")
+        ).length === 0
+      )
+        continue;
+      items.push(value);
+    }
     return (
       <View style={styles.container}>
         <Header
@@ -160,7 +199,7 @@ class SearchResult extends Component {
               onClick: () => this.onBrand(),
               onSet: value => this.onSetBrand(value),
               onReset: () => this.onResetBrand(),
-              onQuit: ()=> this.onQuit(),
+              onQuit: () => this.onQuit(),
               options: this.state.brands,
               selected: this.state.brand_selected,
               state: this.state.show_brands
@@ -171,7 +210,7 @@ class SearchResult extends Component {
               onClick: () => this.onType(),
               onSet: value => this.onSetType(value),
               onReset: () => this.onResetType(),
-              onQuit: ()=> this.onQuit(),
+              onQuit: () => this.onQuit(),
               options: this.state.types,
               selected: this.state.type_selected,
               state: this.state.show_type
@@ -192,7 +231,8 @@ class SearchResult extends Component {
           <ItemTable
             styles={styles_itemtable}
             onLearnMore={item => this.onLearnMore(item)}
-            items={this.state.items}
+            items={items}
+            no_item_message={"没有搜到商品"}
           />
         </View>
       </View>
@@ -249,4 +289,5 @@ const styles_itemtable = StyleSheet.create({
   }
 });
 
-export default SearchResult;
+//export default SearchResult;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResult);

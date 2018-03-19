@@ -58,7 +58,6 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log(nextProps);
     if(nextProps.access_token)
       this.props.navigation.navigate("User");
   }

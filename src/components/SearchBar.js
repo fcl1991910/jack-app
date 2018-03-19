@@ -19,7 +19,7 @@ class SearchBar extends Component {
       onFocus: false,
       searchKey: "",
       hotSearchkeys: [
-        "A2奶粉",
+        "54",
         "UGG雪地靴",
         "电冰箱",
         "旧电视机",
@@ -45,7 +45,6 @@ class SearchBar extends Component {
   };
 
   focus(onClear) {
-    console.log(onClear);
     this.nameInput.focus();
     if (onClear)
       this.setState({

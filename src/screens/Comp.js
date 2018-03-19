@@ -45,7 +45,8 @@ class Comp extends React.Component {
 
   _renderScene = (route, navigator) => {
     if (route.route.key === "Category")
-      return <Category onLearnMore={item => this.onLearnMore(item)} />;
+    <FirstRoute />;
+      //return <Category onLearnMore={item => this.onLearnMore(item)} />;
     else if (route.route.key === "first") return <FirstRoute />;
     else if (route.route.key === "second") return <SecondRoute />;
     else if (route.route.key === "third") return <ThirdRoute />;

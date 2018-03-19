@@ -19,29 +19,34 @@ const ItemTable = props => {
     title,
     text,
     scrollview,
-    product_list
+    product_list,
+    messageText
   } = props.styles;
   let items = [];
-  let items_size = 0;
-  for (var key in props.items) {
-    let item = props.items[key];
-    if (item.image) var image_source = { uri: "http://wangcai.com.au/"+item.image };
-    else var image_source = require("../img/milk-powder.png");
-    console.log(image_source);
-    items.push(
-      <TouchableHighlight
-        style={touchablehighlight}
-        onPress={() => props.onLearnMore(item)}
-        key={items_size++}
-      >
-        <View style={product}>
-          <Image style={image} source={image_source} />
-          <View style={title}>
-            <Text style={text}>{item.name}</Text>
+  if (!props.items||props.items.length === 0) {
+    items = <Text style={messageText}>{props.no_item_message}</Text>
+  } else {
+    let items_size = 0;
+    for (var key in props.items) {
+      let item = props.items[key];
+      if (item.image)
+        var image_source = { uri: "http://wangcai.com.au/" + item.image };
+      else var image_source = require("../img/milk-powder.png");
+      items.push(
+        <TouchableHighlight
+          style={touchablehighlight}
+          onPress={() => props.onLearnMore(item)}
+          key={items_size++}
+        >
+          <View style={product}>
+            <Image style={image} source={image_source} />
+            <View style={title}>
+              <Text style={text}>{item.name}</Text>
+            </View>
           </View>
-        </View>
-      </TouchableHighlight>
-    );
+        </TouchableHighlight>
+      );
+    }
   }
   return (
     <View>
