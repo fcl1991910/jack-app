@@ -5,7 +5,8 @@ import {
   View,
   Dimensions,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from "react-native";
 import ProductSimple from "../components/ProductSimple";
 import Header from "../components/Header";
@@ -76,8 +77,20 @@ class Product extends Component {
 
   renderPagination = (index, total, context) => {
     return (
-      <View style={this.state.fullscreen?styles.paginationStyleFull:styles.paginationStyle}>
-        <Text style={this.state.fullscreen?styles.paginationTextFull:styles.paginationText}>
+      <View
+        style={
+          this.state.fullscreen
+            ? styles.paginationStyleFull
+            : styles.paginationStyle
+        }
+      >
+        <Text
+          style={
+            this.state.fullscreen
+              ? styles.paginationTextFull
+              : styles.paginationText
+          }
+        >
           {index + 1}/{total}
         </Text>
       </View>
@@ -85,13 +98,33 @@ class Product extends Component {
   };
 
   toggleImage = () => {
-    this.setState(prevState => {
-      return { fullscreen: !prevState.fullscreen };
-    });
+    // this.setState(prevState => {
+    //   return { fullscreen: !prevState.fullscreen };
+    // });
   };
 
   render() {
     let images = [];
+    let params = {
+      商品编号: this.state.id,
+      商品品牌: this.state.brand,
+      商品分类: this.state.categories,
+      商品益处: this.state.advantages
+    };
+    let parameters = [];
+    let i = 0;
+    for (var key in params) {
+      parameters.push(
+        <View key={i++} style={styles.parameter}>
+          <View style={styles.paramKey}>
+            <Text style={styles.paramKeyText}>{key}</Text>
+          </View>
+          <View style={styles.paramVal}>
+            <Text style={styles.paramValText}>{params[key]}</Text>
+          </View>
+        </View>
+      );
+    }
     for (let i = 0; i < this.state.images.length; i++) {
       let value = this.state.images[i];
       images.push(
@@ -102,6 +135,35 @@ class Product extends Component {
           />
         </TouchableHighlight>
       );
+    }//ingredientContainer
+    let ingredients = [];
+    
+    let questions = [];
+    for (let i = 0; i < this.state.description.length; i++) {
+      questions.push(
+        <View key={i} style={styles.QandA}>
+          <View style={styles.question}>
+            <View style={styles.Q}>
+              <Text style={styles.QText}>Q</Text>
+            </View>
+            <View style={styles.Qcontent}>
+              <Text style={styles.QcontentText}>
+                {this.state.description[i].title}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.answer}>
+            <View style={styles.Q}>
+              <Text style={styles.AText}>A</Text>
+            </View>
+            <View style={styles.Qcontent}>
+              <Text style={styles.AcontentText}>
+                {this.state.description[i].content}
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
     }
     return (
       <View style={styles.container}>
@@ -110,19 +172,34 @@ class Product extends Component {
           onBack={() => this.onBack()}
           icons={[{ icon: "help", onClick: () => this.onHelp() }]}
         />
-        <View style={this.state.fullscreen?styles.wrapperContainerFull:{}}>
-          <View style={styles.wrapperContainer}>
-          <Swiper
-            style={styles.wrapper}
-            showsButtons={false}
-            loop={false}
-            renderPagination={this.renderPagination}
-            key={this.state.images.length}
+        <ScrollView style={styles.scroll}>
+          <View
+            style={this.state.fullscreen ? styles.wrapperContainerFull : {}}
           >
-            {images}
-          </Swiper>
+            <View style={styles.wrapperContainer}>
+              <Swiper
+                style={styles.wrapper}
+                showsButtons={false}
+                loop={false}
+                renderPagination={this.renderPagination}
+                key={this.state.images.length}
+              >
+                {images}
+              </Swiper>
+            </View>
           </View>
-        </View>
+          <View style={styles.parameterContainer}>{parameters}</View>
+          <View style={styles.gapContainer} />
+          <View style={styles.ingredientContainer}>
+            {ingredients}
+          </View>
+          <View style={styles.questionContainer}>
+            <View style={styles.questionHeadContainer}>
+              <Text style={styles.questionHead}>问题咨询</Text>
+            </View>
+            <View style={styles.questionBodyContainer}>{questions}</View>
+          </View>
+        </ScrollView>
         <Footer />
       </View>
     );
@@ -133,21 +210,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  scroll: {
+    backgroundColor: "#fff",
+    borderColor: "#eee",
+    borderTopWidth: 1
+  },
   wrapperContainerFull: {
-    zIndex:5,
-    position:"absolute",
+    zIndex: 5,
+    position: "absolute",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: "#fff",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   wrapperContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").width
   },
   wrapper: {
-    height: Dimensions.get("window").width},
+    height: Dimensions.get("window").width
+  },
   text: {
     color: "#fff",
     fontSize: 30,
@@ -167,15 +250,89 @@ const styles = StyleSheet.create({
   },
   paginationStyleFull: {
     position: "absolute",
-    top: -Dimensions.get("window").height/6,
-    left: Dimensions.get("window").width/2-8,
-  },paginationTextFull:{
-    
+    top: -Dimensions.get("window").height / 6,
+    left: Dimensions.get("window").width / 2 - 8
+  },
+  paginationTextFull: {
     fontSize: 17
   },
   paginationText: {
     color: "white",
     fontSize: 15
+  },
+  parameterContainer: {
+    borderColor: "#eee",
+    borderTopWidth: 1,
+    paddingHorizontal: 12
+  },
+  parameter: {
+    borderColor: "#eee",
+    borderBottomWidth: 1,
+    flexDirection: "row"
+  },
+  paramKey: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 4
+  },
+  paramKeyText: {
+    color: "#888"
+  },
+  paramVal: {
+    flex: 4,
+    justifyContent: "center",
+    //alignItems: "center",
+    margin: 7
+  },
+  paramValText: {},
+  gapContainer: {
+    height: 7,
+    backgroundColor: "#f4f4f4"
+  },
+  questionContainer: {
+    margin: 13
+  },
+  questionHeadContainer: {},
+  questionHead: {
+    fontSize: 17
+  },
+  questionBodyContainer: {
+    marginTop: 5
+  },
+  QandA: {
+    margin: 7
+  },
+  question: {
+    flexDirection: "row"
+  },
+  Q: {
+    alignItems: "center"
+  },
+  QText: {
+    color: "pink",
+    fontSize: 16
+  },
+  Qcontent: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 6
+  },
+  QcontentText: {
+    fontSize: 13,
+    fontWeight: "600"
+  },
+  answer: {
+    flexDirection: "row",
+    marginTop: 5
+  },
+  AText: {
+    color: "lightskyblue",
+    fontSize: 16
+  },
+  AcontentText: {
+    fontSize: 12,
+    fontWeight: "400"
   }
 });
 
