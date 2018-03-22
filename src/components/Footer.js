@@ -25,7 +25,7 @@ class Footer extends Component {
         {inputs}
         <TouchableHighlight style={styles.button} onPress={()=>this.props.onSubmit()}>
           <View style={styles.buttonView}>
-            <Text style={styles.buttonText}>加入商品</Text>
+            <Text style={styles.buttonText}>{this.props.text}</Text>
           </View>
         </TouchableHighlight>
       </View>

@@ -14,6 +14,7 @@ import Login from "../screens/Login";
 import AddProduct from "../screens/AddProduct";
 import AddCategory from "../screens/AddCategory";
 import Category from "../screens/Category";
+import AddSpecification from "../screens/AddSpecification";
 
 export const Tabs = TabNavigator(
   {
@@ -77,6 +78,9 @@ export const Stacks = StackNavigator({
   },
   AddProduct: {
     screen: AddProduct
+  },
+  AddSpecification: {
+    screen: AddSpecification
   },
   Category: {
     screen: Category

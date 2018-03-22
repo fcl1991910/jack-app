@@ -15,17 +15,50 @@ import * as func from "../func/func";
 var t = require("tcomb-form-native");
 var Form = t.form.Form;
 import AddedTag from "../components/AddedTag";
+import { LOGIN_ATEMPT, LOGIN_DONE, LOGIN_FAIL } from "../constants/actionTypes";
 
 const mapStateToProps = state => ({ ...state.auth });
 
-const mapDispatchToProps = dispatch => ({});
-
+const mapDispatchToProps = dispatch => ({
+  onGetAccessToken: (username, password) => {
+    dispatch({
+      type: LOGIN_ATEMPT
+    });
+    func
+      .callApi("post", "oauth/token", {
+        grant_type: "password",
+        client_id: "2",
+        client_secret: "0xySnTQxUbF5xmRUiBKvPQ4Sy8Wnkh8D9FMVrrPN",
+        username: username,
+        password: password
+      })
+      .then(response => {
+        let payload = response.data;
+        payload["username"] = username;
+        dispatch({
+          type: LOGIN_DONE,
+          payload: response.data
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: error.response.data.message
+        });
+      });
+  }
+});
 class AddProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 0,
-      categories: [{ name: "DHA", id: 32 }, { name: "复合维生素", id: 40 }]
+      name: "",
+      categories: [],
+      specifications: [
+        { name: "A2铂金牛奶粉一段200克装", amount: 5, price: 11.5 },
+        { name: "A2铂金牛奶粉一段400克装", amount: 11, price: 19.5 },
+        { name: "A2铂金牛奶粉一段900克装", amount: 2, price: 40.5 }
+      ]
     };
   }
 
@@ -34,7 +67,14 @@ class AddProduct extends React.Component {
   });
 
   componentDidMount() {
+    this.props.onGetAccessToken("jack@gmail.com", "11111111");
     //this.refs.form.getComponent("name").refs.input.focus();
+  }
+
+  onChange = (value) => {
+    this.setState({
+      value
+    });
   }
 
   onBack = () => {};
@@ -66,29 +106,38 @@ class AddProduct extends React.Component {
         name: {
           label: "商品名",
           placeholder: "输入商品名",
-          error: "用户名不可用",
+          error: "商品名不可用",
           maxLength: 15,
           autoCapitalize: "none"
-        },
-        categories: {
-          item: {
-            label: "asasc"
-          }
         }
       }
     };
   };
 
-  addCatogory = () => {
-    let params = this.state.categories;
-    params.onGoBack = this.onAddCatogoryBack;
-    this.props.navigation.navigate("Category", params);
+  onAddSpecificationBack = value => {
+    this.setState({
+      specifications: value
+    });
+  };
+
+  addSpecification = () => {
+    let params = {
+      specifications: this.state.specifications,
+      onGoBack: this.onAddSpecificationBack
+    };
+    this.props.navigation.navigate("AddSpecification", params);
   };
 
   onAddCatogoryBack = value => {
     this.setState({
       categories: value
     });
+  };
+
+  addCatogory = () => {
+    let params = this.state.categories;
+    params.onGoBack = this.onAddCatogoryBack;
+    this.props.navigation.navigate("Category", params);
   };
 
   clearCategory = value => {
@@ -103,6 +152,26 @@ class AddProduct extends React.Component {
   };
 
   render() {
+    let specifications = [];
+    if (this.state.specifications.length > 0) {
+      for (let i = 0; i < this.state.specifications.length; i++) {
+        let value = this.state.specifications[i];
+        specifications.push(
+          <View style={styles.specifications} key={i}>
+            <AddedTag
+              tag={
+                value.name + " | ￥" + value.price + " | " + value.amount + "个"
+              }
+            />
+          </View>
+        );
+      }
+    } else
+      selected_categories = (
+        <Text style={styles.selectedCategoriesText}>
+          点击修改按钮添加商品规格
+        </Text>
+      );
     let selected_categories = [];
     if (this.state.categories.length > 0) {
       for (let i = 0; i < this.state.categories.length; i++) {
@@ -117,7 +186,10 @@ class AddProduct extends React.Component {
           </View>
         );
       }
-    } else selected_categories = <Text style={styles.selectedCategoriesText}>点击加号添加商品</Text>;
+    } else
+      selected_categories = (
+        <Text style={styles.selectedCategoriesText}>点击加号添加商品</Text>
+      );
     return (
       <View style={styles.container}>
         <Header
@@ -142,21 +214,41 @@ class AddProduct extends React.Component {
                 onChange={this.onChange}
                 type={this.getType()}
                 options={this.getOptions()}
-                value={this.props.value}
+                value={this.state.value}
               />
             </View>
             <View style={styles.categoryContainer}>
               <View style={styles.categoryHeader}>
                 <View style={styles.categoryTitle}>
-                  <Text  style={styles.categoryTitleText}>分类(可选)</Text>
+                  <Text style={styles.categoryTitleText}>
+                    商品规格(至少添加一个)
+                  </Text>
+                </View>
+                <TouchableHighlight onPress={() => this.addSpecification()}>
+                  <View style={styles.editContainer}>
+                    <Text style={styles.editText}>修改</Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <View style={styles.specificationsContainer}>
+                {specifications}
+              </View>
+              <View />
+            </View>
+            <View style={styles.categoryContainer}>
+              <View style={styles.categoryHeader}>
+                <View style={styles.categoryTitle}>
+                  <Text style={styles.categoryTitleText}>分类(可选)</Text>
                 </View>
                 <TouchableHighlight onPress={() => this.addCatogory()}>
-                  <View  style={styles.addContainer}>
+                  <View style={styles.addContainer}>
                     <Icon name="add" />
                   </View>
                 </TouchableHighlight>
               </View>
-              <View  style={styles.selectedCategoriesContainer}>{selected_categories}</View>
+              <View style={styles.selectedCategoriesContainer}>
+                {selected_categories}
+              </View>
               <View />
             </View>
             <TouchableHighlight
@@ -180,7 +272,6 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
     backgroundColor: "#ffffff"
   },
   loadingContainer: {
@@ -193,7 +284,11 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   loading: {},
-  scrollContainer: { shadowColor: "#000", shadowOpacity: 0.95 },
+  scrollContainer: {
+    shadowColor: "#000",
+    shadowOpacity: 0.95,
+    paddingHorizontal: 20
+  },
   title: {
     fontSize: 30,
     alignSelf: "center",
@@ -205,7 +300,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   button: {
-    marginTop:20,
+    marginTop: 20,
     height: 36,
     backgroundColor: "#48BBEC",
     borderColor: "#48BBEC",
@@ -215,36 +310,49 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "center"
   },
-  categoryContainer:{
-    
+  categoryContainer: {},
+  categoryHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: 45
   },
-            categoryHeader:{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              height: 45
-            },
-            categoryTitle:{
-              
-            },
-            categoryTitleText:{
-              fontSize: 18,
-              fontWeight: "400"
-            },
-            addContainer:{
-              
-            },
-            selectedCategoriesContainer:{
-              flexDirection: "row",
-              flexWrap:"wrap" 
-            },
-            
-            selectedCategories:{
-              marginRight: 7
-            },
-            selectedCategoriesText:{
+  categoryTitle: {},
+  categoryTitleText: {
+    fontSize: 18,
+    fontWeight: "400"
+  },
+  addContainer: {},
+  specificationsContainer: {
+    alignItems: "flex-start"
+  },
+  specifications: {
+    marginBottom: 3
+  },
+  editContainer:{
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00BFFF",
+    borderColor: "#00BFFF",
+    borderRadius: 3,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  editText: {
+    color: "white",
+    fontSize:15,
+  },
+  selectedCategoriesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
 
-            },
+  selectedCategories: {
+    marginRight: 7,
+    marginBottom: 3
+  },
+  selectedCategoriesText: {}
 });
 
 //export default AddProduct;

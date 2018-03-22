@@ -158,7 +158,7 @@ class Category extends Component {
     let footer = [];
     let header = [];
     if (this.state.AddCategory) {
-      footer = <Footer onSubmit={() => this.onClickFooter()} />;
+      footer = <Footer onSubmit={() => this.onClickFooter()} text={"提交分类"}/>;
       header = <Header onBack={() => this.onBack()} icons={[]} />;
     } else
       header = (

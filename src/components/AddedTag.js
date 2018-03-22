@@ -3,14 +3,21 @@ import { TouchableHighlight, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 
 const AddedTag = props => {
+  let clearIcon = props.onClear ? (
+    <Icon name="clear" color="white" size={12} />
+  ) : (
+    []
+  );
   return (
     <TouchableHighlight
       style={styles.searchedKey}
-      onPress={() => props.onClear({id:props.id,name:props.tag})}
+      onPress={() =>
+        props.onClear ? props.onClear({ id: props.id, name: props.tag }) : {}
+      }
     >
       <View style={styles.searchedKeyView}>
         <Text style={styles.searchedKeyText}>{props.tag}</Text>
-        <Icon name="clear" color="white" size={12} />
+        {clearIcon}
       </View>
     </TouchableHighlight>
   );
@@ -19,7 +26,7 @@ const AddedTag = props => {
 const styles = {
   searchedKey: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   searchedKeyView: {
     paddingVertical: 4,
@@ -29,9 +36,8 @@ const styles = {
     borderColor: "#888",
     borderRadius: 3,
     borderWidth: 1,
-    height:28,
-    justifyContent:"center",
-    alignItems:"center"
+    justifyContent: "center",
+    alignItems: "center"
   },
   searchedKeyText: {
     color: "white",
