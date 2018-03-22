@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export var callApi = (method, action, params, access_token = "") => {
-  console.log("Called "+action);
+  console.log("Called " + action);
   let key = {
     method: method,
     url: "http://wangcai.com.au/" + action,
     headers: {
-      'Authorization': "Bearer " + access_token
+      Authorization: "Bearer " + access_token
     }
   };
   key[method === "get" ? "params" : "data"] = params;
@@ -26,4 +26,12 @@ export var array_intersection = function(a, b) {
     }
   }
   return result;
+};
+
+export var myIncludes = function(array, val) {
+  for (let i = 0; i < array.length; i++) {
+    let tmp = array[i];
+    if (val.id == tmp.id) return true;
+  }
+  return false;
 };

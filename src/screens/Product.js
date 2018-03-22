@@ -6,7 +6,8 @@ import {
   Dimensions,
   Image,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import ProductSimple from "../components/ProductSimple";
 import Header from "../components/Header";
@@ -57,6 +58,7 @@ class Product extends Component {
           creator_type: response.data.creator_type,
           description: JSON.parse(response.data.description),
           images: JSON.parse(response.data.images),
+          ingredients: JSON.parse(response.data.ingredients),
           instruction: JSON.parse(response.data.instruction),
           tags: JSON.parse(response.data.tags),
           subs: response.data.subs
@@ -125,6 +127,20 @@ class Product extends Component {
         </View>
       );
     }
+    let tags = [];
+    for (let i = 0; i < this.state.tags.length; i++) {
+      let value = this.state.tags[i];
+      tags.push(
+        <View key={i}>
+          <TouchableHighlight style={styles.tagTouchable} onPress={()=>{}}>
+            <View style={styles.tag}>
+              <Text style={styles.tagDot}>·</Text>
+              <Text style={styles.tagText}>{value}</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      );
+    }
     for (let i = 0; i < this.state.images.length; i++) {
       let value = this.state.images[i];
       images.push(
@@ -135,9 +151,57 @@ class Product extends Component {
           />
         </TouchableHighlight>
       );
-    }//ingredientContainer
+    }
+    let instructions = [];
+    for (let i = 0; i < this.state.instruction.length; i++) {
+      instructions.push(
+        <View key={i} style={styles.instruction}>
+            <View style={styles.tip}>
+            <View style={styles.tipIcon}>
+              <Text style={styles.tipText}>Tip</Text>
+              </View>
+            </View>
+            <View style={styles.instructionView}>
+              <Text style={styles.instructionViewText}>
+                {this.state.instruction[i]}
+              </Text>
+            </View>
+          </View>
+      );
+    }
+    //ingredientContainers
+    let k = 0;
     let ingredients = [];
-    
+    for (var key in this.state.ingredients) {
+      let value = this.state.ingredients[key];
+      let sub_ingredients = [];
+      for (var key2 in value) {
+        let value2 = value[key2];
+        sub_ingredients.push(
+          <View key={k++} style={styles.ingredientBody}>
+            <View style={styles.ingredientBodyLeft}>
+              <Text style={styles.ingredientBodyLeftText}>{key2}</Text>
+            </View>
+            <View style={styles.ingredientBodyRight}>
+              <Text style={styles.ingredientBodyRightText}>{value2}</Text>
+            </View>
+          </View>
+        );
+      }
+      ingredients.push(
+        <View key={k++} style={styles.ingredientContainer}>
+          <View style={styles.ingredientHead}>
+            <View style={styles.ingredientHeadLeft}>
+              <Text style={styles.ingredientHeadLeftText}>成分表</Text>
+            </View>
+            <View style={styles.ingredientHeadRight}>
+              <Text style={styles.ingredientHeadRightText}>{key}</Text>
+            </View>
+          </View>
+          {sub_ingredients}
+        </View>
+      );
+    }
     let questions = [];
     for (let i = 0; i < this.state.description.length; i++) {
       questions.push(
@@ -189,10 +253,16 @@ class Product extends Component {
             </View>
           </View>
           <View style={styles.parameterContainer}>{parameters}</View>
+          <View style={styles.tagsContainer}>{tags}</View>
           <View style={styles.gapContainer} />
-          <View style={styles.ingredientContainer}>
-            {ingredients}
+
+          <View style={styles.questionContainer}>
+            <View style={styles.questionHeadContainer}>
+              <Text style={styles.questionHead}>使用指南</Text>
+            </View>
+            <View style={styles.instructionsContainer}>{instructions}</View>
           </View>
+          <View style={styles.ingredientsContainer}>{ingredients}</View>
           <View style={styles.questionContainer}>
             <View style={styles.questionHeadContainer}>
               <Text style={styles.questionHead}>问题咨询</Text>
@@ -213,7 +283,9 @@ const styles = StyleSheet.create({
   scroll: {
     backgroundColor: "#fff",
     borderColor: "#eee",
-    borderTopWidth: 1
+    borderTopWidth: 1,
+    marginBottom:
+      Platform.OS === "ios" && Dimensions.get("window").height === 812 ? 74 : 50
   },
   wrapperContainerFull: {
     zIndex: 5,
@@ -259,6 +331,30 @@ const styles = StyleSheet.create({
   paginationText: {
     color: "white",
     fontSize: 15
+  },
+  tagsContainer:{
+    flexDirection:"row",
+    flexWrap: "wrap",
+    marginHorizontal:10
+  },
+  tagTouchable:{
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  tag:{
+    margin:5,
+    flexDirection:"row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  tagDot:{
+    fontSize:25,
+    fontWeight:"800",
+    color: "deeppink"
+  },
+  tagText:{
+
   },
   parameterContainer: {
     borderColor: "#eee",
@@ -333,7 +429,95 @@ const styles = StyleSheet.create({
   AcontentText: {
     fontSize: 12,
     fontWeight: "400"
-  }
+  },
+  ingredientsContainer: {
+    marginTop: 13
+  },
+  ingredientContainer: {
+    marginBottom: 10,
+    marginHorizontal: 40,
+    borderWidth: 1,
+    borderColor: "#eee"
+  },
+  ingredientHead: {
+    flexDirection: "row",
+    backgroundColor: "rgba(255,215,0,0.6)",
+    borderBottomWidth: 1,
+    borderColor: "#eee"
+  },
+  ingredientHeadLeft: {
+    flex: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 5
+  },
+  ingredientHeadLeftText: {
+    fontSize: 17,
+    fontWeight: "600",
+    color: "indigo"
+  },
+  ingredientHeadRight: {
+    flex: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    alignItems: "flex-end"
+  },
+  ingredientHeadRightText: {
+    fontSize: 12,
+    color: "indigo"
+  },
+  ingredientBody: {
+    flexDirection: "row",
+    backgroundColor: "oldlace"
+  },
+  ingredientBodyLeft: {
+    flex: 1,
+    paddingHorizontal: 15
+  },
+  ingredientBodyLeftText: {
+    color: "slategray",
+    fontSize: 10
+  },
+  ingredientBodyRight: {
+    flex: 1,
+    paddingHorizontal: 15,
+    alignItems: "flex-end"
+  },
+  ingredientBodyRightText: {
+    color: "slategray",
+    fontSize: 10
+  },
+  instructionsContainer: {
+    marginTop: 13,
+  },
+    instruction: {
+      flexDirection: "row",
+      marginHorizontal:15,
+      marginVertical: 5
+    },
+    tip: {
+      flex:1,
+      alignItems: "center",
+    },
+    tipIcon: {
+      backgroundColor: "royalblue",
+      borderColor: "royalblue",
+      borderRadius: 4,
+      borderTopWidth: 2,
+      borderBottomWidth: 2,
+      borderLeftWidth: 3,
+      borderRightWidth: 3,
+    },
+    tipText: {
+      fontSize:10,
+      fontWeight:"600",
+      color:"white"
+    },
+    instructionView: {
+      flex:9
+    },
+    instructionViewText: {
+
+    },
 });
 
 //export default Product;

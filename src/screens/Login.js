@@ -5,7 +5,8 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import LoginForm from "./LoginForm";
@@ -29,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
       })
       .then(response => {
         let payload = response.data;
-        payload['username'] = username;
+        payload["username"] = username;
         dispatch({
           type: LOGIN_DONE,
           payload: response.data
@@ -57,9 +58,8 @@ class Login extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.access_token)
-      this.props.navigation.navigate("User");
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.access_token) this.props.navigation.navigate("User");
   }
 
   getTitle() {
@@ -158,8 +158,16 @@ class Login extends Component {
     let buttonText = this.getButtonText();
     return (
       <View style={styles.container}>
-        <ActivityIndicator animating={this.props.loading} color="#77f" size="small"/>
-        <ScrollView style={{shadowColor:"#000",shadowOpacity:0.95}}>
+        <View
+          style={[styles.loadingContainer, this.props.loading ? {} : { display: "none" }]}
+        >
+          <ActivityIndicator
+            animating={this.props.loading}
+            color="#77f"
+            size="small"
+          />
+        </View>
+        <ScrollView style={styles.scrollContainer}>
           <View>
             <LoginForm
               ref="form"
@@ -192,8 +200,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff"
   },
   loading: {
-    height:45
   },
+  loadingContainer: {
+    top: 0,
+    zIndex: 5,
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255,0.5)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    alignItems: "center"
+  },
+  scrollContainer: { shadowColor: "#000", shadowOpacity: 0.95 },
   title: {
     fontSize: 30,
     alignSelf: "center",

@@ -5,7 +5,8 @@ class Footer extends Component {
   constructor() {
     super();
     this.state = {
-      inputs : ["预设价格","数量"]
+      //inputs : ["预设价格","数量"]
+      inputs: [],
     };
   }
 
@@ -22,7 +23,7 @@ class Footer extends Component {
     return (
       <View style={styles.container}>
         {inputs}
-        <TouchableHighlight style={styles.button}>
+        <TouchableHighlight style={styles.button} onPress={()=>this.props.onSubmit()}>
           <View style={styles.buttonView}>
             <Text style={styles.buttonText}>加入商品</Text>
           </View>

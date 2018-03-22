@@ -1,81 +1,251 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
-import Category from "../components/Category";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ScrollView,
+  TouchableHighlight
+} from "react-native";
+import { Icon } from "react-native-elements";
 import Header from "../components/Header";
-import TabHeader from "../components/TabHeader";
-import ProductList from "../screens/ProductList";
-import SearchResult from "../screens/SearchResult";
+import { connect } from "react-redux";
+import * as func from "../func/func";
+var t = require("tcomb-form-native");
+var Form = t.form.Form;
+import AddedTag from "../components/AddedTag";
 
-const initialLayout = {
-  height: 0,
-  width: Dimensions.get("window").width
-};
+const mapStateToProps = state => ({ ...state.auth });
+
+const mapDispatchToProps = dispatch => ({});
 
 class AddProduct extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 0,
+      categories: [{ name: "DHA", id: 32 }, { name: "复合维生素", id: 40 }]
+    };
+  }
+
   static navigationOptions = ({ navigation }) => ({
-    title:"添加商品"
+    header: null
   });
 
-  state = {
-    index: 0,
-    routes: [
-      { key: "Category", title: "分类" },
-      { key: "SearchResult", title: "搜索商品" },
-    ]
+  componentDidMount() {
+    //this.refs.form.getComponent("name").refs.input.focus();
+  }
+
+  onBack = () => {};
+
+  onPress = () => {
+    console.log(this.refs.form.getValue());
   };
 
-  onLearnMore = item => {
-    this.props.navigation.navigate("SearchResult", item);
+  getType = () => {
+    return t.struct({
+      name: t.String
+      // tags: t.String,
+      // advantages: t.String,
+      // subs: t.String,
+    });
   };
 
-  _renderScene = (route, navigator) => {
-    if (route.route.key === "Category") return <Category onLearnMore={item => this.onLearnMore(item)}/>;
-    else if (route.route.key === "SearchResult") return <SearchResult />;
+  getOptions = () => {
+    return {
+      i18n: {
+        optional: " (可选)",
+        required: "",
+        add: "添加", // add button
+        remove: "✘", // remove button
+        up: "↑", // move up button
+        down: "↓" // move down button
+      },
+      fields: {
+        name: {
+          label: "商品名",
+          placeholder: "输入商品名",
+          error: "用户名不可用",
+          maxLength: 15,
+          autoCapitalize: "none"
+        },
+        categories: {
+          item: {
+            label: "asasc"
+          }
+        }
+      }
+    };
   };
 
-  // _renderScene = SceneMap({
-  //   Category: Category,
-  //   first: FirstRoute,
-  //   second: SecondRoute,
-  //   third: ThirdRoute,
-  //   fourth: FourthRoute
-  // });
+  addCatogory = () => {
+    let params = this.state.categories;
+    params.onGoBack = this.onAddCatogoryBack;
+    this.props.navigation.navigate("Category", params);
+  };
 
-  _handleIndexChange = index => this.setState({ index });
+  onAddCatogoryBack = value => {
+    this.setState({
+      categories: value
+    });
+  };
 
-  _changeIndex = index => this.setState({ index });
-
-  _renderHeader = props => (
-    <TabHeader
-      {...props}
-      styles={styles_tabheader}
-      _changeIndex={i => this._changeIndex(i)}
-    />
-  );
+  clearCategory = value => {
+    if (func.myIncludes(this.state.categories, value))
+      this.setState(prevState => {
+        return {
+          categories: prevState.categories.filter(function(item) {
+            return item.id !== value.id;
+          })
+        };
+      });
+  };
 
   render() {
+    let selected_categories = [];
+    if (this.state.categories.length > 0) {
+      for (let i = 0; i < this.state.categories.length; i++) {
+        let value = this.state.categories[i];
+        selected_categories.push(
+          <View style={styles.selectedCategories} key={i}>
+            <AddedTag
+              id={value.id}
+              tag={value.name}
+              onClear={value => this.clearCategory(value)}
+            />
+          </View>
+        );
+      }
+    } else selected_categories = <Text style={styles.selectedCategoriesText}>点击加号添加商品</Text>;
     return (
-      <TabViewAnimated
-        style={styles.container}
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderHeader={this._renderHeader}
-        onIndexChange={this._handleIndexChange}
-        initialLayout={initialLayout}
-      />
+      <View style={styles.container}>
+        <Header
+          onBack={() => this.onBack()}
+          title="添加自定义产品"
+          icons={[{ icon: "help", onClick: () => this.onHelp() }]}
+        />
+        <View style={styles.bodyContainer}>
+          <View
+            style={[styles.loadingContainer, false ? {} : { display: "none" }]}
+          >
+            <ActivityIndicator
+              animating={false ? true : false}
+              color="#77f"
+              size="small"
+            />
+          </View>
+          <ScrollView style={styles.scrollContainer}>
+            <View>
+              <Form
+                ref="form"
+                onChange={this.onChange}
+                type={this.getType()}
+                options={this.getOptions()}
+                value={this.props.value}
+              />
+            </View>
+            <View style={styles.categoryContainer}>
+              <View style={styles.categoryHeader}>
+                <View style={styles.categoryTitle}>
+                  <Text  style={styles.categoryTitleText}>分类(可选)</Text>
+                </View>
+                <TouchableHighlight onPress={() => this.addCatogory()}>
+                  <View  style={styles.addContainer}>
+                    <Icon name="add" />
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <View  style={styles.selectedCategoriesContainer}>{selected_categories}</View>
+              <View />
+            </View>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.onPress}
+              underlayColor="#99d9f4"
+            >
+              <Text style={styles.buttonText}>提交</Text>
+            </TouchableHighlight>
+          </ScrollView>
+        </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#f7f7f7"
+    flex: 1
   },
-  content: {
-    marginTop: 34
-  }
+  bodyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    backgroundColor: "#ffffff"
+  },
+  loadingContainer: {
+    top: 0,
+    zIndex: 5,
+    position: "absolute",
+    backgroundColor: "rgba(255,255,255,0.5)",
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    alignItems: "center"
+  },
+  loading: {},
+  scrollContainer: { shadowColor: "#000", shadowOpacity: 0.95 },
+  title: {
+    fontSize: 30,
+    alignSelf: "center",
+    marginBottom: 30
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "white",
+    alignSelf: "center"
+  },
+  button: {
+    marginTop:20,
+    height: 36,
+    backgroundColor: "#48BBEC",
+    borderColor: "#48BBEC",
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: "stretch",
+    justifyContent: "center"
+  },
+  categoryContainer:{
+    
+  },
+            categoryHeader:{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: 45
+            },
+            categoryTitle:{
+              
+            },
+            categoryTitleText:{
+              fontSize: 18,
+              fontWeight: "400"
+            },
+            addContainer:{
+              
+            },
+            selectedCategoriesContainer:{
+              flexDirection: "row",
+              flexWrap:"wrap" 
+            },
+            
+            selectedCategories:{
+              marginRight: 7
+            },
+            selectedCategoriesText:{
+
+            },
 });
 
-export default AddProduct;
+//export default AddProduct;
+export default connect(mapStateToProps, mapDispatchToProps)(AddProduct);

@@ -12,10 +12,20 @@ import User from "../screens/User";
 import SearchResult from "../screens/SearchResult";
 import Login from "../screens/Login";
 import AddProduct from "../screens/AddProduct";
-import Category from "../components/Category";
+import AddCategory from "../screens/AddCategory";
+import Category from "../screens/Category";
 
 export const Tabs = TabNavigator(
   {
+    Comp: {
+      screen: AddProduct,
+      navigationOptions: {
+        tabBarLabel: "组件",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="extension" size={35} color={tintColor} />
+        )
+      }
+    },
     ProductList: {
       screen: ProductList,
       navigationOptions: {
@@ -49,15 +59,6 @@ export const Tabs = TabNavigator(
         tabBarLabel: "用户中心",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="account-circle" size={35} color={tintColor} />
-        )
-      }
-    },
-    Comp: {
-      screen: Comp,
-      navigationOptions: {
-        tabBarLabel: "组件",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="extension" size={35} color={tintColor} />
         )
       }
     },

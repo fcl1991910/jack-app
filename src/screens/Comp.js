@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
-import Category from "../components/Category";
+import Category from "../screens/Category";
 import Header from "../components/Header";
 import TabHeader from "../components/TabHeader";
 

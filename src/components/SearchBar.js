@@ -11,6 +11,7 @@ import {
   FlatList
 } from "react-native";
 import { Icon } from "react-native-elements";
+import AddedTag from "../components/AddedTag";
 
 class SearchBar extends Component {
   constructor(props) {
@@ -83,17 +84,7 @@ class SearchBar extends Component {
     } else {
       if (this.props.searchedKey)
         searchedKey = (
-          <TouchableHighlight
-            style={styles.searchedKey}
-            onPress={() => this.propsclearSearch()}
-          >
-            <View style={styles.searchedKeyView}>
-              <Text style={styles.searchedKeyText}>
-                {this.props.searchedKey}
-              </Text>
-              <Icon name="clear" color="white" size={12} />
-            </View>
-          </TouchableHighlight>
+          <AddedTag tag={this.props.searchedKey} onClear={() => this.propsclearSearch()}/>
         );
     }
     let hotSearchKeys = [];
@@ -271,25 +262,6 @@ const styles = StyleSheet.create({
   },
   textInputArea: {
     flex: 1
-  },
-  searchedKey: {
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  searchedKeyView: {
-    paddingVertical: 4,
-    paddingHorizontal: 5,
-    flexDirection: "row",
-    backgroundColor: "#888",
-    borderColor: "#888",
-    borderRadius: 3,
-    borderWidth: 1
-  },
-  searchedKeyText: {
-    color: "white",
-    fontSize: 15,
-    fontWeight: "400",
-    marginRight: 4
   },
   imageContainer: {
     flex: 1,

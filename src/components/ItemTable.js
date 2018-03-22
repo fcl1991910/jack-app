@@ -8,6 +8,8 @@ import {
   Image,
   TouchableHighlight
 } from "react-native";
+import { Icon } from "react-native-elements";
+import * as func from "../func/func";
 
 //组件
 const ItemTable = props => {
@@ -20,11 +22,12 @@ const ItemTable = props => {
     text,
     scrollview,
     product_list,
-    messageText
+    messageText,
+    selected
   } = props.styles;
   let items = [];
-  if (!props.items||props.items.length === 0) {
-    items = <Text style={messageText}>{props.no_item_message}</Text>
+  if (!props.items || props.items.length === 0) {
+    items = <Text style={messageText}>{props.no_item_message}</Text>;
   } else {
     let items_size = 0;
     for (var key in props.items) {
@@ -38,10 +41,34 @@ const ItemTable = props => {
           onPress={() => props.onLearnMore(item)}
           key={items_size++}
         >
-          <View style={product}>
+          <View
+            style={[
+              product,
+              props.AddCategory &&
+              func.myIncludes(props.selectedCategory, {
+                name: item.name,
+                id: item.id
+              })
+                ? selected
+                : {}
+            ]}
+          >
             <Image style={image} source={image_source} />
             <View style={title}>
               <Text style={text}>{item.name}</Text>
+            </View>
+            <View
+              style={
+                props.AddCategory &&
+                func.myIncludes(props.selectedCategory, {
+                  name: item.name,
+                  id: item.id
+                })
+                  ? { position: "absolute", right: 0, bottom: 0 }
+                  : { display: "none" }
+              }
+            >
+              <Icon name="check" color="red" />
             </View>
           </View>
         </TouchableHighlight>

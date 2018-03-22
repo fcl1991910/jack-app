@@ -6,7 +6,8 @@ import {
   Text,
   Dimensions,
   TouchableHighlight,
-  Image
+  Image,
+  Platform
 } from "react-native";
 import { TabViewAnimated, TabBar, SceneMap } from "react-native-tab-view";
 import categories from "../json/categories";
@@ -15,6 +16,7 @@ import ItemTable from "../components/ItemTable";
 import Header from "../components/Header";
 import { connect } from "react-redux";
 import * as func from "../func/func";
+import Footer from "../components/Footer";
 
 const initialLayout = {
   height: 0,
@@ -34,6 +36,8 @@ export const Subcategory = props => {
           styles={styles_itemtable}
           onLearnMore={item => props.onLearnMore(item)}
           items={value1.children}
+          AddCategory={props.AddCategory}
+          selectedCategory={props.selectedCategory}
         />
       );
       subCategories.push(
@@ -64,10 +68,13 @@ export const Subcategory = props => {
 const mapStateToProps = state => ({ ...state.auth });
 
 const mapDispatchToProps = dispatch => ({});
+
 class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      AddCategory: this.props.navigation.state.params ? true : false,
+      selectedCategory: this.props.navigation.state.params,
       index: 0,
       routes: [],
       data: []
@@ -105,8 +112,25 @@ class Category extends Component {
     console.log("onHelp");
   };
 
-  onSearch = searchKey => {
-    this.props.navigation.navigate("SearchResult", searchKey);
+  onSearch = item => {
+    if (this.state.AddCategory) {
+      if (
+        func.myIncludes(this.state.selectedCategory,{ name: item.name, id: item.id })
+      )
+        this.setState(prevState => {
+          return {
+            selectedCategory: prevState.selectedCategory.filter(function(
+              value
+            ) {
+              return item.id !== value.id;
+            })
+          };
+        });
+      else
+        this.setState(prevState => {
+          return { selectedCategory: prevState.selectedCategory.concat({ name: item.name, id: item.id }) };
+        });
+    } else this.props.navigation.navigate("SearchResult", item.name);
   };
 
   static navigationOptions = ({ navigation }) => ({
@@ -117,14 +141,27 @@ class Category extends Component {
 
   _changeIndex = index => this.setState({ index });
 
+  onClickFooter = () => {
+    this.props.navigation.state.params.onGoBack(this.state.selectedCategory);
+    this.props.navigation.goBack();
+  }
+
   render() {
+    let footer = [];
+    let header = [];
+    if(this.state.AddCategory){
+      footer = <Footer onSubmit={()=>this.onClickFooter()}/>;
+      header = <Header onBack={() => this.onBack()} icons={[]}/>
+    }else
+      header = <Header
+      onBack={() => this.onBack()}
+      search={value => this.onSearch(value)}
+      icons={[{ icon: "help", onClick: () => this.onHelp() }]}
+    />;
+
     return (
       <View style={styles.container}>
-        <Header
-          onBack={() => this.onBack()}
-          search={value => this.onSearch(value)}
-          icons={[{ icon: "help", onClick: () => this.onHelp() }]}
-        />
+        {header}
         <View style={styles.categoryContainer}>
           <TabHeader
             navigationState={this.state}
@@ -134,9 +171,12 @@ class Category extends Component {
           <Subcategory
             index={this.state.index}
             data={this.state.data}
-            onLearnMore={item => this.onSearch(item.name)}
+            onLearnMore={item => this.onSearch(item)}
+            AddCategory={this.state.AddCategory}
+            selectedCategory={this.state.selectedCategory}
           />
         </View>
+        {footer}
       </View>
     );
   }
@@ -148,7 +188,9 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flex: 1,
-    flexDirection: "row"
+    flexDirection: "row",
+    marginBottom:
+    Platform.OS === "ios" && Dimensions.get("window").height === 812 ? 74 : 50
   },
   ScrollView: {
     padding: 10,
@@ -222,18 +264,18 @@ const styles_itemtable = StyleSheet.create({
   },
   touchablehighlight: {
     marginTop: 7,
-    width: 75,
-    height: 90,
+    width: 80,
+    height: 95,
     justifyContent: "space-between",
     alignItems: "center"
   },
   product: {
     flexDirection: "column",
-    width: 60,
-    height: 66,
+    width: 64,
+    height: 94,
     backgroundColor: "#fff",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   image: { width: 60, height: 60 },
   title: { width: 60, height: 30 },
@@ -244,7 +286,11 @@ const styles_itemtable = StyleSheet.create({
     textAlign: "center",
     fontWeight: "400"
   },
-  messageText: {}
+  messageText: {},
+  selected: {
+    borderWidth: 2,
+    borderColor: "red"
+  }
 });
 
 //export default Category;

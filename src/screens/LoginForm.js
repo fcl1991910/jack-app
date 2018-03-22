@@ -49,6 +49,10 @@ class LoginForm extends Component {
   //     this.refs.form.getComponent("name").refs.input.focus();
   //   }
 
+  componentDidMount() {
+    this.refs.form.getComponent('username').refs.input.focus();
+  }
+
   getValue = () => {
     return this.refs.form.getValue();
   };
@@ -77,25 +81,6 @@ class LoginForm extends Component {
 
   getOptions = () => {
     return options;
-    switch (this.props.type) {
-      case "LOGIN":
-        return t.struct({
-          username: t.String,
-          password: t.String
-        });
-      case "REGISTER":
-        return t.struct({
-          username: t.String,
-          email: t.String,
-          password: t.String,
-          passwordAgain: t.String
-        });
-      case "FORGOTPASSWORD":
-        return t.struct({
-          username: t.String,
-          email: t.String
-        });
-    }
   };
 
   render() {
