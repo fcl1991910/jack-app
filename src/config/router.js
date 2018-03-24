@@ -18,15 +18,6 @@ import AddSpecification from "../screens/AddSpecification";
 
 export const Tabs = TabNavigator(
   {
-    Comp: {
-      screen: AddProduct,
-      navigationOptions: {
-        tabBarLabel: "组件",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="extension" size={35} color={tintColor} />
-        )
-      }
-    },
     ProductList: {
       screen: ProductList,
       navigationOptions: {
@@ -60,6 +51,15 @@ export const Tabs = TabNavigator(
         tabBarLabel: "用户中心",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="account-circle" size={35} color={tintColor} />
+        )
+      }
+    },
+    Comp: {
+      screen: AddProduct,
+      navigationOptions: {
+        tabBarLabel: "组件",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="extension" size={35} color={tintColor} />
         )
       }
     },

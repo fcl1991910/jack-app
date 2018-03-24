@@ -52,15 +52,22 @@ const Header = props => {
       let tempIcons;
       if (i <= props.icons.length / 2 - 1) tempIcons = leftIcons;
       else tempIcons = rightIcons;
+      let content = <View/>;
+      if(value.icon)
+        content = <View style={styles.subview}>
+        <Icon name={value.icon} style={styles.icon} color="#666" />
+      </View>;
+      else
+        content = <View style={styles.button}>
+        <Text style={styles.buttonText}>{value.text}</Text>
+      </View>
       tempIcons.push(
         <TouchableHighlight
           key={i}
           style={styles.touchable}
           onPress={() => value.onClick()}
         >
-          <View style={styles.subview}>
-            <Icon name={value.icon} style={styles.icon} color="#666" />
-          </View>
+        {content}
         </TouchableHighlight>
       );
     }
@@ -108,6 +115,7 @@ const styles = StyleSheet.create({
   touchable: {
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     paddingLeft: 7,
     paddingRight: 7
   },
@@ -117,7 +125,25 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "#ff7"
-  }
+  },
+  button: {
+    height:30,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
+    flexDirection: "row",
+    backgroundColor: "#48BBEC",
+    borderColor: "#48BBEC",
+    borderRadius: 3,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  buttonText:{
+    color: "white",
+    fontSize: 15,
+    fontWeight: "400",
+    marginRight: 4
+  },
 });
 
 Header.PropTypes = {

@@ -33,6 +33,10 @@ class ProductList extends Component {
     this.props.navigation.navigate("Category");
   };
 
+  onCutomize = () => {
+    this.props.navigation.navigate("AddProduct");
+  }
+
   static navigationOptions = ({ navigation }) => ({
     header: null
   });
@@ -58,8 +62,8 @@ class ProductList extends Component {
         <Header
           title="产品列表"
           icons={[
+            { text: "自定义", onClick: () => this.onCutomize() },
             { icon: "help", onClick: () => this.onHelp() },
-            { icon: "search", onClick: () => this.onSearch() },
             { icon: "add", onClick: () => this.onAdd() }
           ]}
         />

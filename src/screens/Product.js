@@ -35,7 +35,8 @@ class Product extends Component {
       images: [],
       instruction: [],
       tags: [],
-      subs: []
+      subs: [],
+      selected_sub:{}
     };
   }
 
@@ -61,7 +62,8 @@ class Product extends Component {
           ingredients: JSON.parse(response.data.ingredients),
           instruction: JSON.parse(response.data.instruction),
           tags: JSON.parse(response.data.tags),
-          subs: response.data.subs
+          subs: response.data.subs,
+          selected_sub : response.data.subs[0]
         });
       })
       .catch(error => {

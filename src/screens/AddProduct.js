@@ -55,9 +55,9 @@ class AddProduct extends React.Component {
       name: "",
       categories: [],
       specifications: [
-        { name: "A2铂金牛奶粉一段200克装", amount: 5, price: 11.5 },
-        { name: "A2铂金牛奶粉一段400克装", amount: 11, price: 19.5 },
-        { name: "A2铂金牛奶粉一段900克装", amount: 2, price: 40.5 }
+        // { name: "A2铂金牛奶粉一段200克装", amount: 5, price: 11.5 },
+        // { name: "A2铂金牛奶粉一段400克装", amount: 11, price: 19.5 },
+        // { name: "A2铂金牛奶粉一段900克装", amount: 2, price: 40.5 }
       ]
     };
   }
@@ -77,7 +77,9 @@ class AddProduct extends React.Component {
     });
   }
 
-  onBack = () => {};
+  onBack = () => {
+    this.props.navigation.goBack();
+  };
 
   onPress = () => {
     console.log(this.refs.form.getValue());
