@@ -7,8 +7,8 @@ import { createLogger } from "redux-logger";
 import reducer from "./src/reducers";
 
 const logger = createLogger();
-const store = createStore(reducer, applyMiddleware(logger));
-export default class App extends Component {
+const store = createStore(reducer, applyMiddleware(/*logger*/));
+export default class App extends Component {//jack-app
   render() {
     style = {};
     if (Platform.OS === "android") style = { marginTop: 24 };

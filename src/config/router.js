@@ -15,9 +15,19 @@ import AddProduct from "../screens/AddProduct";
 import AddCategory from "../screens/AddCategory";
 import Category from "../screens/Category";
 import AddSpecification from "../screens/AddSpecification";
+import GoogleMap from "../screens/GoogleMap";
 
 export const Tabs = TabNavigator(
   {
+    Comp: {
+      screen: GoogleMap,
+      navigationOptions: {
+        tabBarLabel: "组件",
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="extension" size={35} color={tintColor} />
+        )
+      }
+    },
     ProductList: {
       screen: ProductList,
       navigationOptions: {
@@ -51,15 +61,6 @@ export const Tabs = TabNavigator(
         tabBarLabel: "用户中心",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="account-circle" size={35} color={tintColor} />
-        )
-      }
-    },
-    Comp: {
-      screen: AddProduct,
-      navigationOptions: {
-        tabBarLabel: "组件",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon name="extension" size={35} color={tintColor} />
         )
       }
     },
